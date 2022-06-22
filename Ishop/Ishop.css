@@ -1,0 +1,14 @@
+.Ishop .TableProduct{border-collapse: collapse;
+    border: 1px solid black;
+    text-align: center;}
+.Ishop .ThTable{border: 1px solid black;
+  width: auto;}
+.Ishop .TrTable{width: 50px;}
+.Ishop .TdTable{border: 1px solid black;
+   width: 10%;}
+.Ishop .Img{width: 8em;
+   height: 13em;}
+.Ishop .LabelText{text-align: center;
+  margin: 2% 0 2% 0;
+  font-size: 4em;}
+.Ishop .PName{font-weight: bold;}

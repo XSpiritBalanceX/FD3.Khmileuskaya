@@ -1,0 +1,40 @@
+<!DOCTYPE html> 
+<html> 
+<head> 
+  <meta charset="utf-8" />
+  <title>Интернет магазин</title>
+</head> 
+<body> 
+  <div id="container"></div> 
+      
+  <script src="https://unpkg.com/react@15/dist/react.js"></script> 
+  <script src="https://unpkg.com/react-dom@15/dist/react-dom.js"></script> 
+      
+  <script src="Ishop.js"></script>
+  <link rel="stylesheet" type="text/css" href="Ishop.css" />
+
+  <script>
+ 
+    var labelText='Магазин косметики IShop';
+    var productsArr=[ 
+      {namePdoduct:'Пенка для умывания',code:1,price:'15 BYN', urlProduct:'imagesShop/ceraveClean.jpg',typeScin: 'Нормальная и сухая', count:10}, 
+      {namePdoduct:'Крем для лица',code:2,price:'28 BYN', urlProduct:'imagesShop/araviaCream.jpg',typeScin: 'Сухая', count:8}, 
+      {namePdoduct:'Крем для области вокруг глаз',code:3,price:'43 BYN',urlProduct:'imagesShop/eyesCream.jpg',typeScin: 'Все типы кожи',  count:3},
+      {namePdoduct:'Бальзам для губ',code:4,price:'12 BYN', urlProduct:'imagesShop/balsam.jpg',typeScin: 'Все типы кожи', count:15},
+      {namePdoduct:'Тонер для лица',code:5,price:'23 BYN', urlProduct:'imagesShop/toner.jpg',typeScin: 'Все типы кожи', count:6},
+      {namePdoduct:'Тоник для лица',code:6,price:'36 BYN', urlProduct:'imagesShop/tonic.jpg',typeScin: 'Чувствительная', count:17},
+      {namePdoduct:'Маска для лица',code:7,price:'45 BYN', urlProduct:'imagesShop/maskBut.jpg',typeScin: 'Комбинированная', count:11},
+      {namePdoduct:'Маска тканевая для лица',code:8,price:'6,6 BYN', urlProduct:'imagesShop/mask.jpg',typeScin: 'Все типы кожи', count:23} ,
+      {namePdoduct:'Пилинг для лица',code:9,price:'32 BYN', urlProduct:'imagesShop/piling.jpg',typeScin: 'Нормальная, жирная и комбинированная', count:18},
+      {namePdoduct:'Крем для рук',code:10,price:'8,6 BYN', urlProduct:'imagesShop/armCream.jpg',typeScin: 'Все типы кожи', count:14}
+    ];
+
+    ReactDOM.render(
+      React.createElement(Ishop,{label:labelText,products:productsArr}), 
+      document.getElementById('container') 
+    );
+
+  </script>
+
+</body> 
+</html>

@@ -1,0 +1,6 @@
+.Filter .InputFil{margin-right: 10px;}
+.Filter .ListWords{border: solid 2px black;
+  width: 200px;
+  height: 100px;
+  margin-top: 10px;
+  overflow-y: auto;}
