@@ -1,0 +1,9 @@
+﻿.PName{font-weight: bold;}
+.ButtCon{width: 80%;
+height: 3em;
+font-size: 1em;
+border-radius: 20px 20px 20px 20px ;
+background-color: aliceblue;}
+.ButtCon:hover {background-color: rgb(0, 187, 255);}
+.TdTable{border: 1px solid black;
+  width: 10%;}
