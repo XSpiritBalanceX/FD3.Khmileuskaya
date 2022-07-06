@@ -8,16 +8,7 @@ class BR2JSX extends React.Component {
   static propTypes = {
     text: PropTypes.string.isRequired,
   };
-
-   splitMulti=(str, tokens)=>{
-    var tempChar = tokens[0]; // We can use the first token as a temporary join character
-    for(var i = 1; i < tokens.length; i++){
-        str = str.split(tokens[i]).join(tempChar);
-    }
-    str = str.split(tempChar);
-    return str;
-};
-
+  
   render() {
     let resultArr=[];
     let regExp=/<br\s?\/?>/g;
