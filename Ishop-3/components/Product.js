@@ -18,13 +18,27 @@ class Product extends React.Component {
     cbDeleteProduct:PropTypes.func,
   };
 
-  selectedProd = ()=>{
-    this.props.cbSelectedProduct(this.props.code);
+  selectedProd = (EO)=>{ 
+    var isEdit=false;  
+    var objCard={
+      name:this.props.nameProduct,
+      code:this.props.code,
+      price:this.props.price,
+      url:this.props.srcPict,
+      type:this.props.typeScin,
+      count:this.props.count,
+    };
+     if(EO.target.value=='Изменить'){
+      isEdit=true;
+     }
+      this.props.cbSelectedProduct(this.props.code, objCard, isEdit);
+     
   };
 
   deleteProd = () =>{
     this.props.cbDeleteProduct(this.props.code);
   };
+
 
   render() {
 
@@ -41,6 +55,7 @@ class Product extends React.Component {
           <td className='TdTable'>{this.props.count}</td>
           <td className='TdTable'>
             <input className='ButtCon' type='button' value={this.props.control} onClick={this.deleteProd}/>
+            <input className='ButtCon' name='change' type='button' value='Изменить' />
           </td>
         </tr>        
       )

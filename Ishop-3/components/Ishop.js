@@ -3,7 +3,9 @@ import PropTypes from 'prop-types';
 
 import './Ishop.css';
 
-import Product from './Product'
+import Product from './Product.js'
+import EditCard from './EditCard.js'
+import SelectedCard from './SelectedCard.js'
 
 class Ishop extends React.Component {
 
@@ -31,12 +33,14 @@ class Ishop extends React.Component {
   };
 
   state = {
-    list: this.props.products,
-    isSelected: null,
+    list: this.props.products,//список продуктов
+    isSelected: null,//выбран товар или нет
+    cardSelected:null,//карточка выбранного товара
+    isEdit:null,//изменяется ли товар
   };
 
-  selectedProduct = (code) =>{
-    this.setState({isSelected:code});
+  selectedProduct = (code, objProd, isE) =>{
+    this.setState({isSelected:code, cardSelected:objProd, isEdit:isE});
   };
 
   deleteProduct = (code) =>{
@@ -56,6 +60,7 @@ class Ishop extends React.Component {
   };
 
 
+
   render() {
 
     const productList=this.state.list.map( el =>
@@ -73,9 +78,31 @@ class Ishop extends React.Component {
       />
     );
 
+    //карточка просмотра продукта
+     var cardProduct=(!(this.state.isEdit) && this.state.cardSelected)?<SelectedCard
+       name={this.state.cardSelected.name}
+       price={this.state.cardSelected.price}
+       type={this.state.cardSelected.price}
+       count={this.state.cardSelected.count}/>:null;
+       //карточка изменения продукта
+    var editCard=(this.state.isEdit)?<EditCard 
+       id={this.state.cardSelected.code}
+       name={this.state.cardSelected.name}
+       price={this.state.cardSelected.price}
+       url={this.state.cardSelected.url}
+       type={this.state.cardSelected.type}
+       count={this.state.cardSelected.count}/>:null;
+
     return (
       <div className='Ishop'>
-        <div className='LabelText'>{this.props.label}</div>
+        <div className='LabelText'>{this.props.label}</div>      
+        <div className='buttNewProd'>        
+          <input type='button' className='butNewP' value='Новый продукт'/> 
+        </div> 
+        <div className='infoProduct'>
+          {editCard}  
+         {cardProduct}
+         </div>       
         <table className='TableProduct'>
           <thead>
             <tr className='TrTable'>

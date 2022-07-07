@@ -369,40 +369,6 @@ module.exports = shouldUseNative() ? Object.assign : function (target, source) {
 /* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-/**
- * Copyright (c) 2013-present, Facebook, Inc.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- */
-
-
-
-var ReactPropTypesSecret = 'SECRET_DO_NOT_PASS_THIS_OR_YOU_WILL_BE_FIRED';
-
-module.exports = ReactPropTypesSecret;
-
-
-/***/ }),
-/* 4 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function(process) {
-
-if (process.env.NODE_ENV === 'production') {
-  module.exports = __webpack_require__(13);
-} else {
-  module.exports = __webpack_require__(14);
-}
-
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
-
-/***/ }),
-/* 5 */
-/***/ (function(module, exports, __webpack_require__) {
-
 /* WEBPACK VAR INJECTION */(function(process) {/**
  * Copyright (c) 2013-present, Facebook, Inc.
  *
@@ -421,6 +387,40 @@ if (process.env.NODE_ENV !== 'production') {
   // By explicitly using `prop-types` you are opting into new production behavior.
   // http://fb.me/prop-types-in-prod
   module.exports = __webpack_require__(24)();
+}
+
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
+
+/***/ }),
+/* 4 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * Copyright (c) 2013-present, Facebook, Inc.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+
+
+var ReactPropTypesSecret = 'SECRET_DO_NOT_PASS_THIS_OR_YOU_WILL_BE_FIRED';
+
+module.exports = ReactPropTypesSecret;
+
+
+/***/ }),
+/* 5 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(process) {
+
+if (process.env.NODE_ENV === 'production') {
+  module.exports = __webpack_require__(13);
+} else {
+  module.exports = __webpack_require__(14);
 }
 
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
@@ -469,7 +469,7 @@ var _Ishop2 = _interopRequireDefault(_Ishop);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var labelText = 'Магазин косметики IShop';
-var productsArr = __webpack_require__(28);
+var productsArr = __webpack_require__(32);
 var headerArr = { name: 'Название продукта', price: 'Цена', url: 'Фото', type: 'Тип кожи', count: 'Остаток на складе', control: 'Управление' };
 
 _reactDom2.default.render(_react2.default.createElement(_Ishop2.default, {
@@ -2911,7 +2911,7 @@ if (process.env.NODE_ENV === 'production') {
 /*
  Modernizr 3.0.0pre (Custom Build) | MIT
 */
-var aa=__webpack_require__(1),m=__webpack_require__(2),r=__webpack_require__(4);function y(a){for(var b="https://reactjs.org/docs/error-decoder.html?invariant="+a,c=1;c<arguments.length;c++)b+="&args[]="+encodeURIComponent(arguments[c]);return"Minified React error #"+a+"; visit "+b+" for the full message or use the non-minified dev environment for full errors and additional helpful warnings."}if(!aa)throw Error(y(227));var ba=new Set,ca={};function da(a,b){ea(a,b);ea(a+"Capture",b)}
+var aa=__webpack_require__(1),m=__webpack_require__(2),r=__webpack_require__(5);function y(a){for(var b="https://reactjs.org/docs/error-decoder.html?invariant="+a,c=1;c<arguments.length;c++)b+="&args[]="+encodeURIComponent(arguments[c]);return"Minified React error #"+a+"; visit "+b+" for the full message or use the non-minified dev environment for full errors and additional helpful warnings."}if(!aa)throw Error(y(227));var ba=new Set,ca={};function da(a,b){ea(a,b);ea(a+"Capture",b)}
 function ea(a,b){ca[a]=b;for(a=0;a<b.length;a++)ba.add(b[a])}
 var fa=!("undefined"===typeof window||"undefined"===typeof window.document||"undefined"===typeof window.document.createElement),ha=/^[:A-Z_a-z\u00C0-\u00D6\u00D8-\u00F6\u00F8-\u02FF\u0370-\u037D\u037F-\u1FFF\u200C-\u200D\u2070-\u218F\u2C00-\u2FEF\u3001-\uD7FF\uF900-\uFDCF\uFDF0-\uFFFD][:A-Z_a-z\u00C0-\u00D6\u00D8-\u00F6\u00F8-\u02FF\u0370-\u037D\u037F-\u1FFF\u200C-\u200D\u2070-\u218F\u2C00-\u2FEF\u3001-\uD7FF\uF900-\uFDCF\uFDF0-\uFFFD\-.0-9\u00B7\u0300-\u036F\u203F-\u2040]*$/,ia=Object.prototype.hasOwnProperty,
 ja={},ka={};function la(a){if(ia.call(ka,a))return!0;if(ia.call(ja,a))return!1;if(ha.test(a))return ka[a]=!0;ja[a]=!0;return!1}function ma(a,b,c,d){if(null!==c&&0===c.type)return!1;switch(typeof b){case "function":case "symbol":return!0;case "boolean":if(d)return!1;if(null!==c)return!c.acceptsBooleans;a=a.toLowerCase().slice(0,5);return"data-"!==a&&"aria-"!==a;default:return!1}}
@@ -3902,7 +3902,7 @@ if (process.env.NODE_ENV !== "production") {
 
 var React = __webpack_require__(1);
 var _assign = __webpack_require__(2);
-var Scheduler = __webpack_require__(4);
+var Scheduler = __webpack_require__(5);
 var tracing = __webpack_require__(16);
 
 var ReactSharedInternals = React.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED;
@@ -30553,7 +30553,7 @@ var _react = __webpack_require__(1);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _propTypes = __webpack_require__(5);
+var _propTypes = __webpack_require__(3);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
@@ -30562,6 +30562,14 @@ __webpack_require__(25);
 var _Product = __webpack_require__(26);
 
 var _Product2 = _interopRequireDefault(_Product);
+
+var _EditCard = __webpack_require__(28);
+
+var _EditCard2 = _interopRequireDefault(_EditCard);
+
+var _SelectedCard = __webpack_require__(30);
+
+var _SelectedCard2 = _interopRequireDefault(_SelectedCard);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -30586,10 +30594,12 @@ var Ishop = function (_React$Component) {
     }
 
     return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = Ishop.__proto__ || Object.getPrototypeOf(Ishop)).call.apply(_ref, [this].concat(args))), _this), _this.state = {
-      list: _this.props.products,
-      isSelected: null
-    }, _this.selectedProduct = function (code) {
-      _this.setState({ isSelected: code });
+      list: _this.props.products, //список продуктов
+      isSelected: null, //выбран товар или нет
+      cardSelected: null, //карточка выбранного товара
+      isEdit: null //изменяется ли товар
+    }, _this.selectedProduct = function (code, objProd, isE) {
+      _this.setState({ isSelected: code, cardSelected: objProd, isEdit: isE });
     }, _this.deleteProduct = function (code) {
       var copyArr = _this.state.list.slice();
       var inDelElem;
@@ -30627,6 +30637,21 @@ var Ishop = function (_React$Component) {
         });
       });
 
+      //карточка просмотра продукта
+      var cardProduct = !this.state.isEdit && this.state.cardSelected ? _react2.default.createElement(_SelectedCard2.default, {
+        name: this.state.cardSelected.name,
+        price: this.state.cardSelected.price,
+        type: this.state.cardSelected.price,
+        count: this.state.cardSelected.count }) : null;
+      //карточка изменения продукта
+      var editCard = this.state.isEdit ? _react2.default.createElement(_EditCard2.default, {
+        id: this.state.cardSelected.code,
+        name: this.state.cardSelected.name,
+        price: this.state.cardSelected.price,
+        url: this.state.cardSelected.url,
+        type: this.state.cardSelected.type,
+        count: this.state.cardSelected.count }) : null;
+
       return _react2.default.createElement(
         'div',
         { className: 'Ishop' },
@@ -30634,6 +30659,17 @@ var Ishop = function (_React$Component) {
           'div',
           { className: 'LabelText' },
           this.props.label
+        ),
+        _react2.default.createElement(
+          'div',
+          { className: 'buttNewProd' },
+          _react2.default.createElement('input', { type: 'button', className: 'butNewP', value: '\u041D\u043E\u0432\u044B\u0439 \u043F\u0440\u043E\u0434\u0443\u043A\u0442' })
+        ),
+        _react2.default.createElement(
+          'div',
+          { className: 'infoProduct' },
+          editCard,
+          cardProduct
         ),
         _react2.default.createElement(
           'table',
@@ -30939,7 +30975,7 @@ exports.typeOf = typeOf;
 var ReactIs = __webpack_require__(6);
 var assign = __webpack_require__(2);
 
-var ReactPropTypesSecret = __webpack_require__(3);
+var ReactPropTypesSecret = __webpack_require__(4);
 var has = __webpack_require__(7);
 var checkPropTypes = __webpack_require__(23);
 
@@ -31557,7 +31593,7 @@ module.exports = function(isValidElement, throwOnDirectAccess) {
 var printWarning = function() {};
 
 if (process.env.NODE_ENV !== 'production') {
-  var ReactPropTypesSecret = __webpack_require__(3);
+  var ReactPropTypesSecret = __webpack_require__(4);
   var loggedTypeFailures = {};
   var has = __webpack_require__(7);
 
@@ -31665,7 +31701,7 @@ module.exports = checkPropTypes;
 
 
 
-var ReactPropTypesSecret = __webpack_require__(3);
+var ReactPropTypesSecret = __webpack_require__(4);
 
 function emptyFunction() {}
 function emptyFunctionWithReset() {}
@@ -31746,7 +31782,7 @@ var _react = __webpack_require__(1);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _propTypes = __webpack_require__(5);
+var _propTypes = __webpack_require__(3);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
@@ -31774,11 +31810,22 @@ var Product = function (_React$Component) {
       args[_key] = arguments[_key];
     }
 
-    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = Product.__proto__ || Object.getPrototypeOf(Product)).call.apply(_ref, [this].concat(args))), _this), _this.answerClicked = function (EO) {
-      _this.props.cbSelected(_this.props.code);
-    }, _this.freeAnswerTextChanged = function (EO) {
-      console.log('VotesAnswer: текст свободного ответа изменён - ' + EO.target.value);
-      _this.props.cbFreeAnswerTextChanged(EO.target.value);
+    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = Product.__proto__ || Object.getPrototypeOf(Product)).call.apply(_ref, [this].concat(args))), _this), _this.selectedProd = function (EO) {
+      var isEdit = false;
+      var objCard = {
+        name: _this.props.nameProduct,
+        code: _this.props.code,
+        price: _this.props.price,
+        url: _this.props.srcPict,
+        type: _this.props.typeScin,
+        count: _this.props.count
+      };
+      if (EO.target.value == 'Изменить') {
+        isEdit = true;
+      }
+      _this.props.cbSelectedProduct(_this.props.code, objCard, isEdit);
+    }, _this.deleteProd = function () {
+      _this.props.cbDeleteProduct(_this.props.code);
     }, _temp), _possibleConstructorReturn(_this, _ret);
   }
 
@@ -31821,7 +31868,8 @@ var Product = function (_React$Component) {
         _react2.default.createElement(
           'td',
           { className: 'TdTable' },
-          _react2.default.createElement('input', { className: 'ButtCon', type: 'button', value: this.props.control, onClick: this.deleteProd })
+          _react2.default.createElement('input', { className: 'ButtCon', type: 'button', value: this.props.control, onClick: this.deleteProd }),
+          _react2.default.createElement('input', { className: 'ButtCon', name: 'change', type: 'button', value: '\u0418\u0437\u043C\u0435\u043D\u0438\u0442\u044C' })
         )
       );
     }
@@ -31852,9 +31900,259 @@ exports.default = Product;
 
 /***/ }),
 /* 28 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(1);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _propTypes = __webpack_require__(3);
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
+
+__webpack_require__(29);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var EditCard = function (_React$Component) {
+    _inherits(EditCard, _React$Component);
+
+    function EditCard() {
+        var _ref;
+
+        var _temp, _this, _ret;
+
+        _classCallCheck(this, EditCard);
+
+        for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+            args[_key] = arguments[_key];
+        }
+
+        return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = EditCard.__proto__ || Object.getPrototypeOf(EditCard)).call.apply(_ref, [this].concat(args))), _this), _this.state = {
+            idProd: _this.props.id,
+            nameProd: _this.props.name,
+            priceProd: _this.props.price,
+            urlProd: _this.props.url,
+            typeSc: _this.props.type,
+            countProd: _this.props.count
+        }, _temp), _possibleConstructorReturn(_this, _ret);
+    }
+
+    _createClass(EditCard, [{
+        key: 'componentDidUpdate',
+        value: function componentDidUpdate(oldProps, newProps) {
+            if (oldProps.id !== this.props.id) {
+                this.setState({ idProd: this.props.id,
+                    nameProd: this.props.name,
+                    priceProd: this.props.price,
+                    urlProd: this.props.url,
+                    typeSc: this.props.type,
+                    countProd: this.props.count });
+            }
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            return _react2.default.createElement(
+                _react2.default.Fragment,
+                null,
+                _react2.default.createElement(
+                    'h2',
+                    null,
+                    '\u0420\u0435\u0434\u0430\u043A\u0442\u0438\u0440\u043E\u0432\u0430\u043D\u0438\u0435 \u043F\u0440\u043E\u0434\u0443\u043A\u0442\u0430'
+                ),
+                _react2.default.createElement(
+                    'p',
+                    { className: 'labelInp' },
+                    'ID: ',
+                    this.props.id
+                ),
+                _react2.default.createElement(
+                    'label',
+                    { htmlFor: 'name', className: 'labelInp' },
+                    '\u041D\u0430\u0437\u0432\u0430\u043D\u0438\u0435 \u043F\u0440\u043E\u0434\u0443\u043A\u0442\u0430'
+                ),
+                _react2.default.createElement('input', { type: 'text', className: 'InputProd', name: 'name', value: this.state.nameProd }),
+                _react2.default.createElement('br', null),
+                _react2.default.createElement(
+                    'label',
+                    { htmlFor: 'price', className: 'labelInp' },
+                    '\u0426\u0435\u043D\u0430 \u043F\u0440\u043E\u0434\u0443\u043A\u0442\u0430'
+                ),
+                _react2.default.createElement('input', { type: 'text', className: 'InputProd', name: 'price', value: this.state.priceProd }),
+                _react2.default.createElement('br', null),
+                _react2.default.createElement(
+                    'label',
+                    { htmlFor: 'url', className: 'labelInp' },
+                    'URL \u043F\u0440\u043E\u0434\u0443\u043A\u0442\u0430'
+                ),
+                _react2.default.createElement('input', { type: 'text', className: 'InputProd', name: 'url', value: this.state.urlProd }),
+                _react2.default.createElement('br', null),
+                _react2.default.createElement(
+                    'label',
+                    { htmlFor: 'type', className: 'labelInp' },
+                    '\u0422\u0438\u043F \u043A\u043E\u0436\u0438'
+                ),
+                _react2.default.createElement('input', { type: 'text', className: 'InputProd', name: 'type', value: this.state.typeSc }),
+                _react2.default.createElement('br', null),
+                _react2.default.createElement(
+                    'label',
+                    { htmlFor: 'count', className: 'labelInp' },
+                    '\u041E\u0441\u0442\u0430\u0442\u043E\u043A \u043F\u0440\u043E\u0434\u0443\u043A\u0442\u0430'
+                ),
+                _react2.default.createElement('input', { type: 'text', className: 'InputProd', name: 'count', value: this.state.countProd }),
+                _react2.default.createElement('br', null),
+                _react2.default.createElement('input', { type: 'button', className: 'saveButt', value: '\u0421\u043E\u0445\u0440\u0430\u043D\u0438\u0442\u044C' }),
+                _react2.default.createElement('input', { type: 'button', className: 'canselButt', value: '\u041E\u0442\u043C\u0435\u043D\u0430' })
+            );
+        }
+    }]);
+
+    return EditCard;
+}(_react2.default.Component);
+
+EditCard.PropTypes = {
+    id: _propTypes2.default.string.isRequired,
+    name: _propTypes2.default.string.isRequired,
+    price: _propTypes2.default.string.isRequired,
+    url: _propTypes2.default.string.isRequired,
+    type: _propTypes2.default.string.isRequired,
+    count: _propTypes2.default.number.isRequired
+};
+exports.default = EditCard;
+
+/***/ }),
+/* 29 */
 /***/ (function(module, exports) {
 
-module.exports = [{"namePdoduct":"Пенка для умывания","code":"1","price":"15 BYN","urlProduct":"imagesShop/penka.png","typeScin":"Нормальная и сухая","count":"10","control":"Удалить"},{"namePdoduct":"Крем для лица","code":"2","price":"28 BYN","urlProduct":"imagesShop/cream.png","typeScin":"Сухая","count":"8","control":"Удалить"},{"namePdoduct":"Крем для области вокруг глаз","code":"3","price":"43 BYN","urlProduct":"imagesShop/creamY.png","typeScin":"Все типы кожи","count":"3","control":"Удалить"},{"namePdoduct":"Бальзам для губ","code":"4","price":"12 BYN","urlProduct":"imagesShop/balm.png","typeScin":"Все типы кожи","count":"15","control":"Удалить"},{"namePdoduct":"Тонер для лица","code":"5","price":"23 BYN","urlProduct":"imagesShop/toner.png","typeScin":"Все типы кожи","count":"6","control":"Удалить"},{"namePdoduct":"Тоник для лица","code":"6","price":"36 BYN","urlProduct":"imagesShop/tonic.png","typeScin":"Чувствительная","count":"17","control":"Удалить"},{"namePdoduct":"Маска для лица","code":"7","price":"45 BYN","urlProduct":"imagesShop/maskBut.png","typeScin":"Комбинированная","count":"11","control":"Удалить"},{"namePdoduct":"Маска тканевая для лица","code":"8","price":"6,6 BYN","urlProduct":"imagesShop/mask.png","typeScin":"Все типы кожи","count":"23","control":"Удалить"},{"namePdoduct":"Пилинг для лица","code":"9","price":"32 BYN","urlProduct":"imagesShop/piling.png","typeScin":"Нормальная, жирная и комбинированная","count":"18","control":"Удалить"},{"namePdoduct":"Крем для рук","code":"10","price":"8,6 BYN","urlProduct":"imagesShop/armCream.png","typeScin":"Все типы кожи","count":"14","control":"Удалить"}]
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 30 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(1);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _propTypes = __webpack_require__(3);
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
+
+__webpack_require__(31);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var SelectedCard = function (_React$Component) {
+    _inherits(SelectedCard, _React$Component);
+
+    function SelectedCard() {
+        var _ref;
+
+        var _temp, _this, _ret;
+
+        _classCallCheck(this, SelectedCard);
+
+        for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+            args[_key] = arguments[_key];
+        }
+
+        return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = SelectedCard.__proto__ || Object.getPrototypeOf(SelectedCard)).call.apply(_ref, [this].concat(args))), _this), _this.state = {}, _temp), _possibleConstructorReturn(_this, _ret);
+    }
+
+    _createClass(SelectedCard, [{
+        key: 'render',
+        value: function render() {
+            return _react2.default.createElement(
+                _react2.default.Fragment,
+                null,
+                ' ',
+                _react2.default.createElement(
+                    'h3',
+                    null,
+                    '\u041A\u0430\u0440\u0442\u043E\u0447\u043A\u0430 \u0442\u043E\u0432\u0430\u0440\u0430'
+                ),
+                _react2.default.createElement(
+                    'p',
+                    null,
+                    '\u041D\u0430\u0438\u043C\u0435\u043D\u043E\u0432\u0430\u043D\u0438\u0435 \u0442\u043E\u0432\u0430\u0440\u0430: ',
+                    this.props.name
+                ),
+                _react2.default.createElement(
+                    'p',
+                    null,
+                    '\u0426\u0435\u043D\u0430 \u0442\u043E\u0432\u0430\u0440\u0430: ',
+                    this.props.price
+                ),
+                _react2.default.createElement(
+                    'p',
+                    null,
+                    '\u0422\u0438\u043F \u043A\u043E\u0436\u0438: ',
+                    this.props.type
+                ),
+                _react2.default.createElement(
+                    'p',
+                    null,
+                    '\u041E\u0441\u0442\u0430\u043B\u043E\u0441\u044C ',
+                    this.props.count,
+                    ' \u0448\u0442.'
+                )
+            );
+        }
+    }]);
+
+    return SelectedCard;
+}(_react2.default.Component);
+
+SelectedCard.PropTypes = {
+    name: _propTypes2.default.string.isRequired,
+    price: _propTypes2.default.string.isRequired,
+    type: _propTypes2.default.string.isRequired,
+    count: _propTypes2.default.number.isRequired
+};
+exports.default = SelectedCard;
+
+/***/ }),
+/* 31 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 32 */
+/***/ (function(module, exports) {
+
+module.exports = [{"namePdoduct":"Пенка для умывания","code":1,"price":"15 BYN","urlProduct":"imagesShop/penka.png","typeScin":"Нормальная и сухая","count":10,"control":"Удалить"},{"namePdoduct":"Крем для лица","code":2,"price":"28 BYN","urlProduct":"imagesShop/cream.png","typeScin":"Сухая","count":8,"control":"Удалить"},{"namePdoduct":"Крем для области вокруг глаз","code":3,"price":"43 BYN","urlProduct":"imagesShop/creamY.png","typeScin":"Все типы кожи","count":3,"control":"Удалить"},{"namePdoduct":"Бальзам для губ","code":4,"price":"12 BYN","urlProduct":"imagesShop/balm.png","typeScin":"Все типы кожи","count":15,"control":"Удалить"},{"namePdoduct":"Тонер для лица","code":5,"price":"23 BYN","urlProduct":"imagesShop/toner.png","typeScin":"Все типы кожи","count":6,"control":"Удалить"},{"namePdoduct":"Тоник для лица","code":6,"price":"36 BYN","urlProduct":"imagesShop/tonic.png","typeScin":"Чувствительная","count":17,"control":"Удалить"},{"namePdoduct":"Маска для лица","code":7,"price":"45 BYN","urlProduct":"imagesShop/maskBut.png","typeScin":"Комбинированная","count":11,"control":"Удалить"},{"namePdoduct":"Маска тканевая для лица","code":8,"price":"6,6 BYN","urlProduct":"imagesShop/mask.png","typeScin":"Все типы кожи","count":23,"control":"Удалить"},{"namePdoduct":"Пилинг для лица","code":9,"price":"32 BYN","urlProduct":"imagesShop/piling.png","typeScin":"Нормальная, жирная и комбинированная","count":18,"control":"Удалить"},{"namePdoduct":"Крем для рук","code":10,"price":"8,6 BYN","urlProduct":"imagesShop/armCream.png","typeScin":"Все типы кожи","count":14,"control":"Удалить"}]
 
 /***/ })
 /******/ ]);

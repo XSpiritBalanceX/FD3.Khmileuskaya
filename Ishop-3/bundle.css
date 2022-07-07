@@ -1,6 +1,8 @@
+body{position: relative;}
 .Ishop .TableProduct{border-collapse: collapse;
   border: 1px solid black;
-  text-align: center;}
+  text-align: center;
+  width: 60%;}
 .Ishop .ThTable{border: 1px solid black;
 width: auto;}
 .TrTable{width: 50px;}
@@ -11,6 +13,14 @@ width: auto;}
 .Ishop .LabelText{text-align: center;
 margin: 2% 0 2% 0;
 font-size: 4em;}
+.buttNewProd{position: absolute; left: 61%;}
+.buttCardProd{position: absolute; left: 61%;}
+.butNewP{height: 2.5em;
+  font-size: 0.8em;
+  border-radius: 20px 20px 20px 20px ;
+  background-color: aliceblue;}
+.butNewP:hover {background-color: rgb(0, 187, 255);}
+.infoProduct{position: fixed; left: 61%; top: 150px;}
 
 .PName{font-weight: bold;}
 .ButtCon{width: 80%;
@@ -20,5 +30,9 @@ border-radius: 20px 20px 20px 20px ;
 background-color: aliceblue;}
 .ButtCon:hover {background-color: rgb(0, 187, 255);}
 .TdTable{border: 1px solid black;
-  width: 10%;}
+  width: 10%;}.InputProd{position: absolute; left: 150px;
+ width: 80%; }
+.labelInp{position: relative;}
+.saveButt{ margin: 20px 3px 0 0;}
+.canselButt{ margin-top: 20px;}
 /*# sourceMappingURL=bundle.css.map*/
