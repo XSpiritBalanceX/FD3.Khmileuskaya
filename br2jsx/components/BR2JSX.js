@@ -14,10 +14,12 @@ class BR2JSX extends React.Component {
     let regExp=/<br\s?\/?>/g;
     
     let newArr=this.props.text.split(regExp);
-
-    newArr.forEach((elem, index)=>{
+    
+    newArr.forEach((elem, index, arr)=>{
       resultArr.push(elem);
-      resultArr.push(<br key={index}/>);
+      if(arr.length-1 !== index){
+        resultArr.push(<br key={index}/>);
+      }      
     });
 
     return (
