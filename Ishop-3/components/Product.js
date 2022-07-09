@@ -16,10 +16,12 @@ class Product extends React.Component {
     isSelected:PropTypes.bool,
     cbSelectedProduct:PropTypes.func,
     cbDeleteProduct:PropTypes.func,
-  };
+    disabled:PropTypes.bool.isRequired,
+  }; 
 
   selectedProd = (EO)=>{ 
     var isEdit=false;  
+    var workMod=null;
     var objCard={
       name:this.props.nameProduct,
       code:this.props.code,
@@ -30,8 +32,13 @@ class Product extends React.Component {
     };
      if(EO.target.value=='Изменить'){
       isEdit=true;
+      workMod=2;
      }
-      this.props.cbSelectedProduct(this.props.code, objCard, isEdit);
+     else{
+      workMod=3;
+     }
+      this.props.cbSelectedProduct(this.props.code, objCard, isEdit, workMod);
+      console.log(workMod)
      
   };
 
@@ -54,8 +61,8 @@ class Product extends React.Component {
           <td className='TdTable'>{this.props.typeScin}</td>
           <td className='TdTable'>{this.props.count}</td>
           <td className='TdTable'>
-            <input className='ButtCon' type='button' value={this.props.control} onClick={this.deleteProd}/>
-            <input className='ButtCon' name='change' type='button' value='Изменить' />
+            <input className='ButtCon' type='button' value={this.props.control} onClick={this.deleteProd} disabled={this.props.disabled}/>
+            <input className='ButtCon' name='change' type='button' value='Изменить' disabled={this.props.disabled} />
           </td>
         </tr>        
       )

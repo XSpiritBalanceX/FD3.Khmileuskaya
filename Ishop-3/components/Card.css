@@ -1,0 +1,13 @@
+ /* .InputProd{position: absolute; left: 140px;
+    width: 185px; } */
+.labelInp{} 
+.saveButt{ margin: 20px 3px 0 0;}
+.canselButt{ margin-top: 20px;}
+.flex{display: flex; 
+    flex-direction: row;
+    position: relative;
+    margin-bottom: 10px;
+    width: 100%;}
+.error{/* position: absolute; left: 335px; */
+   color: red;
+width: auto;}

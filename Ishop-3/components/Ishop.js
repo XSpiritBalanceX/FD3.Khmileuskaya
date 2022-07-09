@@ -4,8 +4,7 @@ import PropTypes from 'prop-types';
 import './Ishop.css';
 
 import Product from './Product.js'
-import EditCard from './EditCard.js'
-import SelectedCard from './SelectedCard.js'
+import Card from './Card.js'
 
 class Ishop extends React.Component {
 
@@ -29,7 +28,8 @@ class Ishop extends React.Component {
           count: PropTypes.number.isRequired,
           control: PropTypes.string.isRequired,
         })
-      )   
+      ),
+      startWorkModel:PropTypes.number.isRequired  
   };
 
   state = {
@@ -37,10 +37,12 @@ class Ishop extends React.Component {
     isSelected: null,//выбран товар или нет
     cardSelected:null,//карточка выбранного товара
     isEdit:null,//изменяется ли товар
+    workModel:this.props.startWorkModel,//отображение карточек
+    disabledButton:false,//можно ли кликать по кнопкам
   };
 
-  selectedProduct = (code, objProd, isE) =>{
-    this.setState({isSelected:code, cardSelected:objProd, isEdit:isE});
+  selectedProduct = (code, objProd, isE, workMod) =>{
+    this.setState({isSelected:code, cardSelected:objProd, isEdit:isE, workModel: workMod});
   };
 
   deleteProduct = (code) =>{
@@ -59,6 +61,10 @@ class Ishop extends React.Component {
     }
   };
 
+  disabledBut=(boolValue)=>{
+    this.setState({disabledButton:boolValue});
+  }
+
 
 
   render() {
@@ -75,32 +81,28 @@ class Ishop extends React.Component {
         isSelected={el.code===this.state.isSelected}
         cbSelectedProduct={this.selectedProduct}
         cbDeleteProduct={this.deleteProduct}
+        disabled={this.state.disabledButton}
       />
     );
 
-    //карточка просмотра продукта
-     var cardProduct=(!(this.state.isEdit) && this.state.cardSelected)?<SelectedCard
-       name={this.state.cardSelected.name}
-       price={this.state.cardSelected.price}
-       type={this.state.cardSelected.price}
-       count={this.state.cardSelected.count}/>:null;
-       //карточка изменения продукта
-    var editCard=(this.state.isEdit)?<EditCard 
-       id={this.state.cardSelected.code}
-       name={this.state.cardSelected.name}
-       price={this.state.cardSelected.price}
-       url={this.state.cardSelected.url}
-       type={this.state.cardSelected.type}
-       count={this.state.cardSelected.count}/>:null;
+    //карточка продукта
+     var cardProduct=(this.state.cardSelected)?<Card
+      id={this.state.cardSelected.code} 
+     name={this.state.cardSelected.name}
+     price={this.state.cardSelected.price}
+     url={this.state.cardSelected.url}
+     type={this.state.cardSelected.type}
+     count={this.state.cardSelected.count}
+     workMod={this.state.workModel}
+     cbDisabled={this.disabledBut}/>:null;
 
     return (
       <div className='Ishop'>
         <div className='LabelText'>{this.props.label}</div>      
         <div className='buttNewProd'>        
-          <input type='button' className='butNewP' value='Новый продукт'/> 
+          <input type='button' className='butNewP' value='Новый продукт' disabled={this.state.disabledButton}/> 
         </div> 
-        <div className='infoProduct'>
-          {editCard}  
+        <div className='infoProduct'>  
          {cardProduct}
          </div>       
         <table className='TableProduct'>
