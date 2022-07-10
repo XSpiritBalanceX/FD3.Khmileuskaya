@@ -6,7 +6,7 @@ import Ishop from './components/Ishop';
 var labelText='Магазин косметики IShop';
 var productsArr=require('./products.json');
 var headerArr={name:'Название продукта', price:'Цена', url:'Фото', type:'Тип кожи', count:'Остаток на складе', control:'Управление'};
-var workModel=1;
+var workModel=0;
 
 ReactDOM.render(
   <Ishop 

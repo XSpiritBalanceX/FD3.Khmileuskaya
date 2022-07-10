@@ -25,7 +25,7 @@ class Ishop extends React.Component {
           price: PropTypes.string.isRequired,
           urlProduct: PropTypes.string.isRequired,
           typeScin: PropTypes.string,
-          count: PropTypes.number.isRequired,
+          count: PropTypes.string.isRequired,
           control: PropTypes.string.isRequired,
         })
       ),
@@ -39,6 +39,7 @@ class Ishop extends React.Component {
     isEdit:null,//изменяется ли товар
     workModel:this.props.startWorkModel,//отображение карточек
     disabledButton:false,//можно ли кликать по кнопкам
+    isCreated:false,
   };
 
   selectedProduct = (code, objProd, isE, workMod) =>{
@@ -63,7 +64,23 @@ class Ishop extends React.Component {
 
   disabledBut=(boolValue)=>{
     this.setState({disabledButton:boolValue});
-  }
+  };
+
+  saveEdit=(editCard)=>{
+    var newListProd=this.state.list.map(element=>{
+      return element.code===editCard.code?editCard:element;
+    });
+    this.setState({list:newListProd, isSelected:editCard.code, cardSelected:editCard});
+  };
+
+  createNewProduct=()=>{
+    if(this.state.workModel===1||this.state.workModel===2){
+      this.setState({isCreated:false, isSelected:null});
+    }
+      this.setState({isCreated:true, isSelected:null, workModel:3, cardSelected:this.state.list});
+    
+  };
+  
 
 
 
@@ -86,21 +103,26 @@ class Ishop extends React.Component {
     );
 
     //карточка продукта
-     var cardProduct=(this.state.cardSelected)?<Card
-      id={this.state.cardSelected.code} 
-     name={this.state.cardSelected.name}
-     price={this.state.cardSelected.price}
-     url={this.state.cardSelected.url}
-     type={this.state.cardSelected.type}
-     count={this.state.cardSelected.count}
+     var cardProduct=(this.state.cardSelected||this.state.isEdit)?<Card
+      id={this.state.workModel==3?null: this.state.cardSelected.code} 
+     name={this.state.workModel==3?'':this.state.cardSelected.namePdoduct}
+     price={this.state.workModel==3?'':this.state.cardSelected.price}
+     url={this.state.workModel==3?'':this.state.cardSelected.urlProduct}
+     type={this.state.workModel==3?'':this.state.cardSelected.typeScin}
+     count={this.state.workModel==3?'':this.state.cardSelected.count}
      workMod={this.state.workModel}
-     cbDisabled={this.disabledBut}/>:null;
+     cbDisabled={this.disabledBut}
+     cbSaveEdit={this.saveEdit}
+     isCreated={this.state.isCreated}/>:null;
+
+     
 
     return (
       <div className='Ishop'>
         <div className='LabelText'>{this.props.label}</div>      
         <div className='buttNewProd'>        
-          <input type='button' className='butNewP' value='Новый продукт' disabled={this.state.disabledButton}/> 
+         <input type='button' className='butNewP' value='Новый продукт' disabled={this.state.disabledButton} onClick={this.createNewProduct}/>
+         
         </div> 
         <div className='infoProduct'>  
          {cardProduct}

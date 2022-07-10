@@ -11,8 +11,8 @@ class Product extends React.Component {
     price:PropTypes.string.isRequired,
     srcPict:PropTypes.string.isRequired,
     typeScin:PropTypes.string.isRequired,
-    count:PropTypes.number.isRequired,
-    control:PropTypes.string.isRequired,
+    count:PropTypes.string.isRequired,
+    control:PropTypes.string,
     isSelected:PropTypes.bool,
     cbSelectedProduct:PropTypes.func,
     cbDeleteProduct:PropTypes.func,
@@ -20,26 +20,30 @@ class Product extends React.Component {
   }; 
 
   selectedProd = (EO)=>{ 
+    if(this.props.disabled){
+      EO.stopPropagation();
+    EO.preventDefault();
+  }
+  else{
     var isEdit=false;  
     var workMod=null;
     var objCard={
-      name:this.props.nameProduct,
+      namePdoduct:this.props.nameProduct,
       code:this.props.code,
       price:this.props.price,
-      url:this.props.srcPict,
-      type:this.props.typeScin,
+      urlProduct:this.props.srcPict,
+      typeScin:this.props.typeScin,
       count:this.props.count,
     };
      if(EO.target.value=='Изменить'){
       isEdit=true;
-      workMod=2;
+      workMod=1;
      }
      else{
-      workMod=3;
+      workMod=2;
      }
-      this.props.cbSelectedProduct(this.props.code, objCard, isEdit, workMod);
-      console.log(workMod)
-     
+     this.props.cbSelectedProduct(this.props.code, objCard, isEdit, workMod);
+  }
   };
 
   deleteProd = () =>{
@@ -50,7 +54,7 @@ class Product extends React.Component {
   render() {
 
       return (
-        <tr style={{backgroundColor:this.props.isSelected? 'rgb(113, 188, 253)':'transparent'}} onClick={this.selectedProd}>
+        <tr style={{backgroundColor:this.props.isSelected? 'rgb(113, 188, 253)':'transparent'}} onClick={this.selectedProd} >
           <td className='TdTable'>
             <p className='PName'>{this.props.nameProduct}</p>
           </td>
@@ -63,6 +67,7 @@ class Product extends React.Component {
           <td className='TdTable'>
             <input className='ButtCon' type='button' value={this.props.control} onClick={this.deleteProd} disabled={this.props.disabled}/>
             <input className='ButtCon' name='change' type='button' value='Изменить' disabled={this.props.disabled} />
+            
           </td>
         </tr>        
       )
