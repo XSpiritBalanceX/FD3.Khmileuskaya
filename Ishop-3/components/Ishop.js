@@ -27,6 +27,7 @@ class Ishop extends React.Component {
           typeScin: PropTypes.string,
           count: PropTypes.string.isRequired,
           control: PropTypes.string.isRequired,
+          edit:PropTypes.string.isRequired,
         })
       ),
       startWorkModel:PropTypes.number.isRequired  
@@ -58,12 +59,12 @@ class Ishop extends React.Component {
     });
     if(questAbDel){
       copyArr.splice(inDelElem,1);
-      this.setState({list:copyArr,cardSelected:null, isEdit:false, workModel:this.props.startWorkModel,});
+      this.setState({list:copyArr,cardSelected:null, isEdit:false});
     }
   };
 
   createNewProduct=()=>{
-    var newCreatProd={code:this.state.list.length+1,
+    var newCreatProd={code:this.state.list.length+3,
       nameProduct:'',
       price:'',
       urlProduct:'',
@@ -98,7 +99,8 @@ class Ishop extends React.Component {
     cardSelected:{...newProduct},
     isEdit:false,
     isCreated:false,
-    isMadeChange:false});
+    isMadeChange:false,
+    workModel:0});
   };
 
   saveEdit=(newProduct)=>{
@@ -110,6 +112,12 @@ class Ishop extends React.Component {
       isSelected:newProduct.code,
       cardSelected:newProduct,
       isMadeChange:false});
+      if(this.state.isSelected){
+        this.setState({workModel:2});
+      }
+      else{
+        this.setState({workModel:0});
+      }
   };
 
   render() {
@@ -122,6 +130,7 @@ class Ishop extends React.Component {
         typeScin={el.typeScin }
         count={el.count}
         control={el.control}
+        edit={el.edit}
         isSelected={el.code===this.state.isSelected}
         cbSelectedProduct={this.selectedProduct}
         isMadeChange={this.state.isMadeChange}

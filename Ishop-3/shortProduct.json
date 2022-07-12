@@ -1,5 +1,5 @@
 [ 
-    {"nameProduct":"Пенка для умывания","code":1,"price":"15 BYN", "urlProduct":"imagesShop/penka.png","typeScin": "Нормальная и сухая", "count":"10", "control":"Удалить"}, 
-      {"nameProduct":"Крем для лица","code":2,"price":"28 BYN", "urlProduct":"imagesShop/cream.png","typeScin": "Сухая", "count":"8", "control":"Удалить"}, 
-      {"nameProduct":"Крем для области вокруг глаз","code":3,"price":"43 BYN","urlProduct":"imagesShop/creamY.png","typeScin": "Все типы кожи",  "count":"3", "control":"Удалить"}
+    {"nameProduct":"Пенка для умывания","code":1,"price":"15 BYN", "urlProduct":"imagesShop/penka.png","typeScin": "Нормальная и сухая", "count":"10", "control":"Удалить","edit":"Изменить"}, 
+      {"nameProduct":"Крем для лица","code":2,"price":"28 BYN", "urlProduct":"imagesShop/cream.png","typeScin": "Сухая", "count":"8", "control":"Удалить","edit":"Изменить"}, 
+      {"nameProduct":"Крем для области вокруг глаз","code":3,"price":"43 BYN","urlProduct":"imagesShop/creamY.png","typeScin": "Все типы кожи",  "count":"3", "control":"Удалить","edit":"Изменить"}
 ]

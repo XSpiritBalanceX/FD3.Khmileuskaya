@@ -13,6 +13,7 @@ class Product extends React.Component {
     typeScin:PropTypes.string.isRequired,
     count:PropTypes.string.isRequired,
     control:PropTypes.string,
+    edit:PropTypes.string,
     isSelected:PropTypes.bool,
     cbSelectedProduct: PropTypes.func.isRequired,
     isMadeChange:PropTypes.bool,
@@ -66,8 +67,8 @@ class Product extends React.Component {
         <td className='TdTable'>{this.props.typeScin}</td>
         <td className='TdTable'>{this.props.count}</td>
         <td className='TdTable'>
-          <input className='ButtCon' type='button' value={this.props.control} onClick={this.deleteProd} disabled={this.props.isMadeChange}/>
-          <input className='ButtCon' name='change' type='button' value='Изменить' disabled={this.props.isMadeChange} />
+          <input className='ButtCon' type='button' defaultValue={this.props.control} onClick={this.deleteProd} disabled={this.props.isMadeChange}/>
+          <input className='ButtCon' name='change' type='button' defaultValue={this.props.edit} disabled={this.props.isMadeChange} />
           
         </td>
       </tr>        
