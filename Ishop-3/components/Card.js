@@ -4,190 +4,216 @@ import PropTypes from 'prop-types';
 import './Card.css';
 
 class Card extends React.Component{
+ 
+  static propTypes={
+    code:PropTypes.number.isRequired, 
+     nameProduct:PropTypes.string.isRequired,
+     price:PropTypes.string.isRequired,
+     urlProduct:PropTypes.string.isRequired,
+     typeScin:PropTypes.string.isRequired,
+     count:PropTypes.string.isRequired,
+     workModel:PropTypes.number.isRequired,
+     cbMadeChange:PropTypes.func,
+     isCreated:PropTypes.bool,
+     cbCanselEdit:PropTypes.func.isRequired,
+     cbCanselSaveNewProduct:PropTypes.func.isRequired,
+     cbSaveNewProduct:PropTypes.func.isRequired,
+     cbSaveEdit:PropTypes.func.isRequired,
+  }
 
-    static propTypes={
-       id:PropTypes.number,
-       name:PropTypes.string,
-       price:PropTypes.string,
-       url:PropTypes.string,
-       type:PropTypes.string,
-       count:PropTypes.string,
-       workMod:PropTypes.number.isRequired,
-       cbDisabled:PropTypes.func.isRequired,
-       cbSaveEdit:PropTypes.func.isRequired,
-       isCreated:PropTypes.bool,
+  state={
+    code:this.props.code,
+    nameProduct:this.props.nameProduct,
+    price:this.props.price,
+    urlProduct:this.props.urlProduct,
+    typeScin:this.props.typeScin,
+    count:this.props.count,
+    changeName:false,
+    changePrice:false,
+    changeUrl:false,
+    changeType:false,
+    changeCount:false,
+
+    errText: {
+      name: '',
+      price: '',
+      url:'',
+      type:'',
+      count: '',
+  }
+  };
+
+  componentDidUpdate(oldProps, oldState){
+    if(oldProps.code!==this.props.code){
+      this.setState({code:this.props.code,
+        nameProduct:this.props.nameProduct,
+        price:this.props.price,
+        urlProduct:this.props.urlProduct,
+        typeScin:this.props.typeScin,
+        count:this.props.count,
+        workModel:this.props.workModel})
+    }
+  }
+
+  changeInput=(EO)=>{
+    this.checkField(EO.target.name, EO.target.value);
+    this.props.cbMadeChange(true);
+    
+  };
+
+  checkField=(name, value)=>{
+    var validValue=true;
+    switch(name){
+      case 'name':validValue=this.checkString(value);
+      this.props.isCreated?this.setState({changeName:true}):null;
+       this.setState({nameProduct:value}); break;
+      case 'type': validValue=this.checkString(value);
+      this.props.isCreated?this.setState({changeType:true}):null;
+      this.setState({typeScin:value, changeType:true}); break;
+      case 'price':validValue=this.checkNumber(value);
+      this.props.isCreated?this.setState({changePrice:true}):null;
+      this.setState({price:value, changePrice:true}); break;
+      case 'count': validValue=this.checkNumber(value);
+        this.props.isCreated?this.setState({changeCount:true}):null;
+        this.setState({count:value, changeCount:true}); break;
+      case 'url': validValue=this.checkUrl(value);
+      this.props.isCreated?this.setState({changeUrl:true}):null;
+      this.setState({urlProduct:value, changeUrl:true}); break;
+    }
+    var message=validValue?'':'Поле заполнено неверно';
+    this.setState({errText: {...this.state.errText, [name]: message}})
+  };
+
+  checkString=(value)=>{
+    let regAlp=/^[а-яё]*$/i;
+    return regAlp.test(value.toLowerCase());
+  };
+
+  checkNumber=(value)=>{
+    return !isNaN(Number(value));
+  };
+
+  checkUrl=(value)=>{
+    let reg = /(.jpg|.png|jpeg)$/;
+    return reg.test(value);
+  };
+
+  focusInput=(EO)=>{
+   EO.target.value='';
+  }
+
+  saveCard=()=>{
+    var newProduct={
+      code:this.state.code,
+      nameProduct:this.state.nameProduct,
+      price:this.state.price,
+      urlProduct:this.state.urlProduct,
+      typeScin:this.state.typeScin,
+      count:this.state.count
     };
+    this.props.cbMadeChange(false);
+    if(this.props.isCreated){
+      newProduct.control='Удалить';
+      return this.props.cbSaveNewProduct(newProduct);
+    }
+    this.props.cbSaveEdit(newProduct);
+  };
 
-    state={
-      idProd:this.props.id,
-      nameProd:this.props.name,
-      priceProd:this.props.price,
-      urlProd:this.props.url,
-      typeSc:this.props.type,
-      countProd:this.props.count,
-      workModel:this.props.workMod,//отображение карточек
-      validName:null,
-      validPrice:null,
-      validURL:null,
-      validType:null,
-      validCount:null,
-      disabledSave:false,//можно ли сохранить изменения
-    };
-
-    componentDidUpdate(oldProps, newProps){
-        if(oldProps.id !== this.props.id || oldProps.workMod!==this.props.workMod){
-            this.setState({idProd:this.props.id,
-            nameProd:this.props.name,
-            priceProd:this.props.price,
-            urlProd:this.props.url,
-            typeSc:this.props.type,
-            countProd:this.props.count,
-            workModel:this.props.workMod,/* 
-            validName:null, 
-            validPrice:null,
-            validURL:null,
-            validType:null,
-            validCount:null, */
-            disabledSave:false,})
-        }
-    };
-
-    changeInput=(EO)=>{   
-        this.validInputForm(EO.target.name, EO.target.value) ;
-        this.props.cbDisabled(true);
-    };
-
-    validInputForm=(name, value)=>{
-        let error;
-        let regAlp=/^[a-z]*$/i;
-        switch(name){
-            case 'name': regAlp.test(value.toLowerCase()) || value===''?error=true:error=false;
-              this.setState({nameProd:value, validName:error}); break;
-            case 'price':isNaN(Number(value))||value===''? error=true:error=false;
-              this.setState({priceProd:value, validPrice:error});break;
-            case 'url': value===''?error=true:error=false;
-              this.setState({urlProd:value, validURL:error}); break;
-            case 'type': regAlp.test(value.toLowerCase()) || value===''?error=true:error=false;
-              this.setState({typeSc:value, validType:error}); break; 
-            case 'count': isNaN(Number(value))||value===''? error=true:error=false;
-              this.setState({countProd:value, validCount:error}); break;
-           }
-           if(this.state.validName || this.state.validPrice || this.state.validURL || this.state.validType ||this.state.validCount){
-            this.setState({disabledSave:true})
-           }
-           else{
-            this.setState({disabledSave:false})
-           }
-    };
+  canselEdit=()=>{
+    this.props.cbMadeChange(false);
+    this.props.cbCanselEdit();
+    this.setState({code:this.props.code,
+      nameProduct:this.props.nameProduct,
+      price:this.props.price,
+      urlProduct:this.props.urlProduct,
+      typeScin:this.props.typeScin,
+      count:this.props.count});
+    if(this.props.isCreated){
+      this.props.cbCanselSaveNewProduct();
+    }
+  };
 
 
-    saveEditCard=()=>{
-      var editCard={
-        code:this.state.idProd,
-        namePdoduct:this.state.nameProd,
-        price:this.state.priceProd,
-        urlProduct:this.state.urlProd,
-        typeScin:this.state.typeSc,
-        count:this.state.countProd,
-      };
-      this.props.cbSaveEdit(editCard);
-      this.props.cbDisabled(false);
-    };
+  render(){
+    if(this.props.workModel===0){
+       return null;
+    }
+    if(this.props.workModel===1){
+      return(<React.Fragment>
+        <h2>Изменение в продукт</h2>
+        <p className='labelInp'>ID: {this.props.code}</p>
+        <div className='flex'>
+               <label htmlFor='name' className='labelInp'>Название продукта</label> 
+               <input type='text' className='InputProd' name='name' value={this.state.nameProduct} onChange={this.changeInput} onFocus={this.focusInput} />                              
+        <div className='error'>{this.state.errText.name}
+        </div>  
+        </div>
+        <div className='flex'>
+          <label htmlFor='price' className='labelInp'>Цена продукта</label>
+          <input type='text' className='InputProd' name='price' value={this.state.price} onChange={this.changeInput} onFocus={this.focusInput}/>            
+        <div className='error'>{this.state.errText.price}</div>  
+        </div>
+        <div className='flex'>
+          <label htmlFor='url' className='labelInp'>URL продукта</label>
+          <input type='text' className='InputProd' name='url' value={this.state.urlProduct} onChange={this.changeInput} onFocus={this.focusInput}/>            
+        <div className='error'>{this.state.errText.url}</div>  
+        </div>
+        <div className='flex'>
+          <label htmlFor='type' className='labelInp'>Тип кожи</label>
+          <input type='text' className='InputProd' name='type' value={this.state.typeScin} onChange={this.changeInput} onFocus={this.focusInput}/>            
+        <div className='error'>{this.state.errText.type}</div>  
+        </div>
+        <div className='flex'>
+          <label htmlFor='count' className='labelInp'>Остаток продукта</label>
+          <input type='text' className='InputProd' name='count' value={this.state.count} onChange={this.changeInput} onFocus={this.focusInput}/>            
+        <div className='error'>{this.state.errText.count}</div>  
+        </div>
+        <input type='button' className='saveButt' value='Сохранить' disabled={this.state.disabledSave} onClick={this.saveCard}/>
+        <input type='button' className='canselButt' value='Отмена'onClick={this.canselEdit}/>
+      </React.Fragment>)
+    }
+    if(this.props.workModel===2){
+      return(<React.Fragment> <h3>Карточка товара</h3>
+      <p>Наименование товара: {this.props.nameProduct}</p>
+      <p>Цена товара: {this.props.price}</p>
+      <p>Тип кожи: {this.props.typeScin}</p>
+      <p>Осталось {this.props.count} шт.</p>
+      </React.Fragment>)
+    }
+    if(this.props.workModel===3){
+      return (<React.Fragment>
+        <h2>Создание нового товара</h2>
+        <div className='flex'>
+               <label htmlFor='name' className='labelInp'>Название продукта</label> 
+               <input type='text' className='InputProd' name='name' value={this.state.nameProduct} onChange={this.changeInput} />                              
+        <div className='error'>{!this.state.changeName?'Введите данные используя кириллицу':this.state.errText.name}
+        </div>  
+        </div>
+        <div className='flex'>
+          <label htmlFor='price' className='labelInp'>Цена продукта</label>
+          <input type='text' className='InputProd' name='price' value={this.state.price} onChange={this.changeInput} />            
+        <div className='error'>{!this.state.changePrice?'Заполните поле. Данные в виде чисел':this.state.errText.price}</div>  
+        </div>
+        <div className='flex'>
+          <label htmlFor='url' className='labelInp'>URL продукта</label>
+          <input type='text' className='InputProd' name='url' value={this.state.urlProduct} onChange={this.changeInput} />            
+        <div className='error'>{!this.state.changeUrl?'Заполните корректно поле':this.state.errText.url}</div>  
+        </div>
+        <div className='flex'>
+          <label htmlFor='type' className='labelInp'>Тип кожи</label>
+          <input type='text' className='InputProd' name='type' value={this.state.typeScin} onChange={this.changeInput} />            
+        <div className='error'>{!this.state.changeType?'Заполните поле.Используйте кириллицу':this.state.errText.type}</div>  
+        </div>
+        <div className='flex'>
+          <label htmlFor='count' className='labelInp'>Остаток продукта</label>
+          <input type='text' className='InputProd' name='count' value={this.state.count} onChange={this.changeInput} />            
+        <div className='error'>{!this.state.changeCount?'Заполните поле. Данные в виде чисел':this.state.errText.count}</div>  
+        </div>
+        <input type='button' className='saveButt' value='Добавить' disabled={this.state.disabledSave} onClick={this.saveCard} />
+        <input type='button' className='canselButt' value='Отмена'onClick={this.canselEdit}/>
+      </React.Fragment>)
+    }
+  }
 
-    canselEdit=()=>{
-      this.setState({nameProd:this.props.name,
-        priceProd:this.props.price,
-        urlProd:this.props.url,
-        typeSc:this.props.type,
-        countProd:this.props.count,
-        validName:null,
-        validPrice:null,
-        validURL:null,
-        validType:null,
-        validCount:null,
-        disabledSave:false,});
-        this.props.cbDisabled(false);
-    };
-
-    render(){      
-        if(this.state.workModel===1 || this.state.workModel===3){
-         var phrase=this.props.isCreated&&this.state.workModel===3?'Создание нового товара': 'Редактирование продукта';
-        var idProdForm=this.props.isCreated&&this.state.workModel===3?null:<p className='labelInp'>ID: {this.props.id}</p>;
-        var inpSaveForm=this.props.isCreated&&this.state.workModel===3?'Добавить':'Сохранить';
-        return(<React.Fragment>
-            <h2>{phrase}</h2>
-            {idProdForm}
-            <div className='flex'>
-                   <label htmlFor='name' className='labelInp'>Название продукта</label> 
-                   <input type='text' className='InputProd' name='name' value={this.state.nameProd} onChange={this.changeInput}/>                              
-            <div className='error'>{this.state.validName||this.state.nameProd===''?'Заполните поле.Используйте кириллицу':null}
-            </div>  
-            </div>
-            <div className='flex'>
-              <label htmlFor='price' className='labelInp'>Цена продукта</label>
-              <input type='text' className='InputProd' name='price' value={this.state.priceProd} onChange={this.changeInput}/>            
-            <div className='error'>{this.state.validPrice||this.state.priceProd===''?'Заполните поле. Данные в виде чисел':this.state.validPrice?'Используйте цифры':null}</div>  
-            </div>
-            <div className='flex'>
-              <label htmlFor='url' className='labelInp'>URL продукта</label>
-              <input type='text' className='InputProd' name='url' value={this.state.urlProd} onChange={this.changeInput}/>            
-            <div className='error'>{this.state.validURL||this.state.urlProd===''?'Заполните корректно поле':null}</div>  
-            </div>
-            <div className='flex'>
-              <label htmlFor='type' className='labelInp'>Тип кожи</label>
-              <input type='text' className='InputProd' name='type' value={this.state.typeSc} onChange={this.changeInput}/>            
-            <div className='error'>{this.state.validType||this.state.typeSc===''?'Заполните поле.Используйте кириллицу':null}</div>  
-            </div>
-            <div className='flex'>
-              <label htmlFor='count' className='labelInp'>Остаток продукта</label>
-              <input type='text' className='InputProd' name='count' value={this.state.countProd} onChange={this.changeInput}/>            
-            <div className='error'>{this.state.validCount||this.state.countProd===''?'Заполните поле. Данные в виде чисел':null}</div>  
-            </div>
-            <input type='button' className='saveButt' value={inpSaveForm} disabled={this.state.disabledSave} onClick={this.saveEditCard}/>
-            <input type='button' className='canselButt' value='Отмена'onClick={this.canselEdit}/>
-          </React.Fragment>
-          );
-        }
-        else if(this.state.workModel===2){
-            return(<React.Fragment> <h3>Карточка товара</h3>
-        <p>Наименование товара: {this.props.name}</p>
-        <p>Цена товара: {this.props.price}</p>
-        <p>Тип кожи: {this.props.type}</p>
-        <p>Осталось {this.props.count} шт.</p>
-        </React.Fragment>)
-        }
-        /* else if(this.state.workModel===3){
-          return (<React.Fragment>
-            <h2>Добавить новый продукт</h2>
-            <div className='flex'>
-                   <label htmlFor='name' className='labelInp'>Название продукта</label> 
-                   <input type='text' className='InputProd' name='name' value={this.state.nameProd} onChange={this.changeInput}/>                              
-            <div className='error'>{!this.state.validName?null:'Используйте кириллицу'}</div>  
-            </div>
-            <div className='flex'>
-              <label htmlFor='price' className='labelInp'>Цена продукта</label>
-              <input type='text' className='InputProd' name='price' value={this.state.priceProd} onChange={this.changeInput}/>            
-            <div className='error'>{!this.state.validPrice?null:'Используйте цифры'}</div>  
-            </div>
-            <div className='flex'>
-              <label htmlFor='url' className='labelInp'>URL продукта</label>
-              <input type='text' className='InputProd' name='url' value={this.state.urlProd} onChange={this.changeInput}/>            
-            <div className='error'>{!this.state.validURL?null:'Поле не может быть пустым'}</div>  
-            </div>
-            <div className='flex'>
-              <label htmlFor='type' className='labelInp'>Тип кожи</label>
-              <input type='text' className='InputProd' name='type' value={this.state.typeSc} onChange={this.changeInput}/>            
-            <div className='error'>{!this.state.validType?null:'Используйте кириллицу'}</div>  
-            </div>
-            <div className='flex'>
-              <label htmlFor='count' className='labelInp'>Остаток продукта</label>
-              <input type='text' className='InputProd' name='count' value={this.state.countProd} onChange={this.changeInput}/>            
-            <div className='error'>{!this.state.validCount?null:'Используйте цифры'}</div>  
-            </div>
-            <input type='button' className='saveButt' value='Добавить' disabled={this.state.disabledSave} onClick={this.saveNewProduct}/>
-            <input type='button' className='canselButt' value='Отмена'onClick={this.canselEdit}/>
-          </React.Fragment>);
-        } */
-   }
 }
 export default Card;

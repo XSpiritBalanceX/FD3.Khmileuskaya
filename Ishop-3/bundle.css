@@ -30,9 +30,13 @@ border-radius: 20px 20px 20px 20px ;
 background-color: aliceblue;}
 .ButtCon:hover {background-color: rgb(0, 187, 255);}
 .TdTable{border: 1px solid black;
-  width: 10%;}.InputProd{position: absolute; left: 150px;
- width: 80%; }
-.labelInp{position: relative;}
-.saveButt{ margin: 20px 3px 0 0;}
+  width: 10%;} .saveButt{ margin: 20px 3px 0 0;}
 .canselButt{ margin-top: 20px;}
+.flex{display: flex; 
+    flex-direction: row;
+    position: relative;
+    margin-bottom: 10px;
+    width: 100%;}
+.error{color: red;
+width: auto;}
 /*# sourceMappingURL=bundle.css.map*/

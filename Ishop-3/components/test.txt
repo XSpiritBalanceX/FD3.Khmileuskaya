@@ -1,0 +1,440 @@
+import React from 'react';
+import PropTypes from 'prop-types';
+
+import './Ishop.css';
+
+import Product from './Product.js'
+import Card from './Card.js'
+
+class Ishop extends React.Component {
+
+  static propTypes = {
+    label: PropTypes.string.isRequired, 
+      header:PropTypes.shape({
+        name: PropTypes.string.isRequired,
+        price: PropTypes.string.isRequired,
+        url: PropTypes.string.isRequired,
+        type: PropTypes.string.isRequired,
+        count: PropTypes.string.isRequired,
+        control:PropTypes.string.isRequired,
+      }),
+      products:PropTypes.arrayOf(
+        PropTypes.shape({
+          namePdoduct: PropTypes.string.isRequired,
+          code: PropTypes.number.isRequired,
+          price: PropTypes.string.isRequired,
+          urlProduct: PropTypes.string.isRequired,
+          typeScin: PropTypes.string,
+          count: PropTypes.string.isRequired,
+          control: PropTypes.string.isRequired,
+        })
+      ),
+      startWorkModel:PropTypes.number.isRequired  
+  };
+
+  state = {
+    list: this.props.products,//список продуктов
+    isSelected: null,//выбран товар или нет
+    cardSelected:null,//карточка выбранного товара
+    isEdit:false,//изменяется ли товар
+    workModel:this.props.startWorkModel,//отображение карточек
+    disabledButton:false,//можно ли кликать по кнопкам
+    isCreated:false,//создается ли новый продукт
+    isMadeChange:false,//внеслись ли изменения
+  };
+
+  selectedProduct = (code, objProd, isE, workMod, isCrea) =>{
+    this.setState({isSelected:code, 
+      cardSelected:objProd, 
+      isEdit:isE, 
+      workModel: workMod, 
+      isCreated:isCrea});
+  };
+
+  deleteProduct = (code) =>{
+    var copyArr=this.state.list.slice();
+    var inDelElem;
+    var questAbDel;
+    copyArr.forEach((el,index)=>{
+      if (el.code===code){
+        inDelElem=index; 
+        questAbDel=confirm(`Вы действительно хотите удалить продукт "${el.namePdoduct}" из каталога?`)       
+      }      
+    });
+    if(questAbDel){
+      copyArr.splice(inDelElem,1);
+      this.setState({list:copyArr});
+    }
+  };
+
+  disabledBut=(boolValue)=>{
+    this.setState({disabledButton:boolValue});
+  };
+
+  saveEdit=(editCard)=>{
+    var newListProd=this.state.list.map(element=>{
+      return element.code===editCard.code?editCard:element;
+    });
+    this.setState({list:newListProd, 
+      isSelected:editCard.code, 
+      cardSelected:editCard,
+      isMadeChange:false});
+  };
+
+  createNewProduct=()=>{
+    var newCreatProd={code:this.state.list.length+1,
+      namePdoduct:'',
+      price:'',
+      urlProduct:'',
+      typeScin:'',
+      count:'',
+    };
+      this.setState({isCreated:true,  
+        workModel:3, 
+        cardSelected:newCreatProd});    
+  };
+
+  saveNewProduct=(newProduct)=>{
+    var newList=[...this.state.list,newProduct];
+    this.setState({list: newList,
+    isSelected:newProduct.code,
+    isEdit:false,
+    cardSelected:newProduct,
+    isCreated:false, workModel:this.props.startWorkModel, isMadeChange:false}) 
+    console.log(newList); 
+  };
+
+  madeChange=(value)=>{
+    this.setState({isMadeChange:value});
+  }
+ 
+  canselSaveNewProd=()=>{
+    this.setState({isSelected:null, cardSelected:null, isCreated:false})
+  };
+
+  canselEdit=()=>{
+    this.setState({isEdit:false})
+  }
+
+  render() {
+    const productList=this.state.list.map( el =>
+      <Product key={el.code}
+        nameProduct={el.namePdoduct} 
+        code={el.code}
+        price={el.price}
+        srcPict={el.urlProduct}
+        typeScin={el.typeScin }
+        count={el.count}
+        control={el.control}
+        isSelected={el.code===this.state.isSelected}
+        cbSelectedProduct={this.selectedProduct}
+        cbDeleteProduct={this.deleteProduct}
+        disabled={this.state.disabledButton}
+        isMadeChange={this.state.isMadeChange}
+      />
+    );
+
+    //карточка продукта
+     var cardProduct=(this.state.cardSelected||this.state.isEdit)?<Card
+      id={ this.state.cardSelected.code} 
+     name={this.state.cardSelected.namePdoduct}
+     price={this.state.cardSelected.price}
+     url={this.state.cardSelected.urlProduct}
+     type={this.state.cardSelected.typeScin}
+     count={this.state.cardSelected.count}
+     workMod={this.state.workModel}
+     cbDisabled={this.disabledBut}
+     cbSaveEdit={this.saveEdit}
+     isCreated={this.state.isCreated}
+     cbSaveNewProduct={this.saveNewProduct}
+     cbCanselSaveNewProd={this.canselSaveNewProd}
+     cbCanselEdit={this.canselEdit}
+     cbMadeChange={this.madeChange}/>:null;
+
+     
+
+    return (
+      <div className='Ishop'>
+        <div className='LabelText'>{this.props.label}</div>      
+        <div className='buttNewProd'>        
+         <input type='button' className='butNewP' value='Новый продукт' disabled={this.state.disabledButton} onClick={this.createNewProduct}/>
+         
+        </div> 
+        <div className='infoProduct'>  
+         {cardProduct}
+         </div>       
+        <table className='TableProduct'>
+          <thead>
+            <tr className='TrTable'>
+              <th className='ThTable'>{this.props.header.name}</th>
+              <th className='ThTable'>{this.props.header.price}</th>
+              <th className='ThTable'>{this.props.header.url}</th>
+              <th className='ThTable'>{this.props.header.type}</th>
+              <th className='ThTable'>{this.props.header.count}</th>
+              <th className='ThTable'>{this.props.header.control}</th>
+            </tr>
+          </thead>
+          <tbody>{productList}</tbody>
+        </table>
+      </div>
+    );
+
+  }
+
+}
+
+export default Ishop;
+
+import React from 'react';
+import PropTypes from 'prop-types';
+
+import './Card.css';
+
+class Card extends React.Component{
+
+    static propTypes={
+       id:PropTypes.number.isRequired,
+       name:PropTypes.string.isRequired,
+       price:PropTypes.string.isRequired,
+       url:PropTypes.string.isRequired,
+       type:PropTypes.string.isRequired,
+       count:PropTypes.string.isRequired,
+       workMod:PropTypes.number.isRequired,
+       cbDisabled:PropTypes.func.isRequired,
+       cbSaveEdit:PropTypes.func.isRequired,
+       isCreated:PropTypes.bool,
+       cbSaveNewProduct:PropTypes.func.isRequired,
+       cbCanselSaveNewProd:PropTypes.func.isRequired,
+       cbCanselEdit:PropTypes.func.isRequired,
+       cbMadeChange:PropTypes.func.isRequired,
+    };
+
+    state={
+      idProd:this.props.id,
+      nameProd:this.props.name,
+      priceProd:this.props.price,
+      urlProd:this.props.url,
+      typeSc:this.props.type,
+      countProd:this.props.count,
+      workModel:this.props.workMod,//отображение карточек
+      validName:'',
+      validPrice:'',
+      validURL:'',
+      validType:'',
+      validCount:'',
+      disabledSave:false,//можно ли сохранить изменения
+    };
+
+    componentDidUpdate(oldProps, oldState){
+        if(oldProps.id !== this.props.id || oldProps.workMod!==this.props.workMod){
+          console.log('изменение в card')
+            this.setState({idProd:this.props.id,
+            nameProd:this.props.name,
+            priceProd:this.props.price,
+            urlProd:this.props.url,
+            typeSc:this.props.type,
+            countProd:this.props.count,
+            workModel:this.props.workMod,
+            disabledSave:false,})
+        }
+    };
+
+    changeInput=(EO)=>{   
+        this.validInputForm(EO.target.name, EO.target.value) ;
+        this.props.cbDisabled(true);
+        this.props.cbMadeChange(true);
+    };
+
+    validInputForm=(name, value)=>{
+        let error;
+        let regAlp=/^[a-z]*$/i;
+        switch(name){
+            case 'name': regAlp.test(value.toLowerCase()) || value===''?error=true:error=false;
+              this.setState({nameProd:value, validName:error}); break;
+            case 'price':isNaN(Number(value))||value===''? error=true:error=false;
+              this.setState({priceProd:value, validPrice:error});break;
+            case 'url': value===''?error=true:error=false;
+              this.setState({urlProd:value, validURL:error}); break;
+            case 'type': regAlp.test(value.toLowerCase()) || value===''?error=true:error=false;
+              this.setState({typeSc:value, validType:error}); break; 
+            case 'count': isNaN(Number(value))||value===''? error=true:error=false;
+              this.setState({countProd:value, validCount:error}); break;
+           }
+           if(this.state.validName || this.state.validPrice || this.state.validURL || this.state.validType ||this.state.validCount){
+            this.setState({disabledSave:true})
+           }
+           else{
+            this.setState({disabledSave:false})
+           }
+    };
+
+
+    saveEditCard=()=>{
+      var editCard={
+        code:this.state.idProd,
+        namePdoduct:this.state.nameProd,
+        price:this.state.priceProd,
+        urlProduct:this.state.urlProd,
+        typeScin:this.state.typeSc,
+        count:this.state.countProd,
+      };
+      this.props.cbMadeChange(false);
+      if(this.props.isCreated){
+        editCard.control='Удалить';
+        this.props.cbSaveNewProduct(editCard);
+      }
+      this.props.cbSaveEdit(editCard);
+      this.props.cbDisabled(false);
+    };
+
+    canselEdit=()=>{
+      this.setState({nameProd:this.props.name,
+        priceProd:this.props.price,
+        urlProd:this.props.url,
+        typeSc:this.props.type,
+        countProd:this.props.count,
+        validName:'',
+        validPrice:'',
+        validURL:'',
+        validType:'',
+        validCount:'',
+        disabledSave:false,});
+        this.props.cbDisabled(false);
+        this.props.cbMadeChange(false);
+        this.props.cbCanselEdit();
+        if(this.props.isCreated){
+          this.props.cbCanselSaveNewProd();
+        }
+    };
+
+    render(){  
+        if(this.state.workModel===1 || this.state.workModel===3){
+         var phrase=this.props.isCreated&&this.state.workModel===3?'Создание нового товара': 'Редактирование продукта';
+        var idProdForm=this.props.isCreated&&this.state.workModel===3?null:<p className='labelInp'>ID: {this.props.id}</p>;
+        var inpSaveForm=this.props.isCreated&&this.state.workModel===3?'Добавить':'Сохранить';
+        return(<React.Fragment>
+            <h2>{phrase}</h2>
+            {idProdForm}
+            <div className='flex'>
+                   <label htmlFor='name' className='labelInp'>Название продукта</label> 
+                   <input type='text' className='InputProd' name='name' value={this.state.nameProd} onChange={this.changeInput}/>                              
+            <div className='error'>{this.state.validName||this.state.nameProd===''?'Заполните поле.Используйте кириллицу':null}
+            </div>  
+            </div>
+            <div className='flex'>
+              <label htmlFor='price' className='labelInp'>Цена продукта</label>
+              <input type='text' className='InputProd' name='price' value={this.state.priceProd} onChange={this.changeInput}/>            
+            <div className='error'>{this.state.validPrice||this.state.priceProd===''?'Заполните поле. Данные в виде чисел':this.state.validPrice?'Используйте цифры':null}</div>  
+            </div>
+            <div className='flex'>
+              <label htmlFor='url' className='labelInp'>URL продукта</label>
+              <input type='text' className='InputProd' name='url' value={this.state.urlProd} onChange={this.changeInput}/>            
+            <div className='error'>{this.state.validURL||this.state.urlProd===''?'Заполните корректно поле':null}</div>  
+            </div>
+            <div className='flex'>
+              <label htmlFor='type' className='labelInp'>Тип кожи</label>
+              <input type='text' className='InputProd' name='type' value={this.state.typeSc} onChange={this.changeInput}/>            
+            <div className='error'>{this.state.validType||this.state.typeSc===''?'Заполните поле.Используйте кириллицу':null}</div>  
+            </div>
+            <div className='flex'>
+              <label htmlFor='count' className='labelInp'>Остаток продукта</label>
+              <input type='text' className='InputProd' name='count' value={this.state.countProd} onChange={this.changeInput}/>            
+            <div className='error'>{this.state.validCount||this.state.countProd===''?'Заполните поле. Данные в виде чисел':null}</div>  
+            </div>
+            <input type='button' className='saveButt' value={inpSaveForm} disabled={this.state.disabledSave} onClick={this.saveEditCard}/>
+            <input type='button' className='canselButt' value='Отмена'onClick={this.canselEdit}/>
+          </React.Fragment>
+          );
+        }
+        else if(this.state.workModel===2){
+            return(<React.Fragment> <h3>Карточка товара</h3>
+        <p>Наименование товара: {this.props.name}</p>
+        <p>Цена товара: {this.props.price}</p>
+        <p>Тип кожи: {this.props.type}</p>
+        <p>Осталось {this.props.count} шт.</p>
+        </React.Fragment>)
+        }
+        else if(this.state.workModel===0){
+          return null;
+      }
+   }
+}
+export default Card;
+import React from 'react';
+import PropTypes from 'prop-types';
+
+import './Product.css';
+
+class Product extends React.Component {
+
+  static propTypes = {
+    nameProduct:PropTypes.string.isRequired,
+    code:PropTypes.number.isRequired,
+    price:PropTypes.string.isRequired,
+    srcPict:PropTypes.string.isRequired,
+    typeScin:PropTypes.string.isRequired,
+    count:PropTypes.string.isRequired,
+    control:PropTypes.string,
+    isSelected:PropTypes.bool,
+    cbSelectedProduct:PropTypes.func,
+    cbDeleteProduct:PropTypes.func,
+    disabled:PropTypes.bool,
+    isMadeChange:PropTypes.bool
+  }; 
+
+  selectedProd = (EO)=>{ 
+    let isCrea=false;  
+    let workMod;
+    let isEdit ;
+    if (!this.props.isMadeChange) {
+      isEdit = false;
+      if (EO.target.value === 'Изменить') {
+        isEdit = true;
+        workMod=1;
+      }
+      var objCard={
+        namePdoduct:this.props.nameProduct,
+        code:this.props.code,
+        price:this.props.price,
+        urlProduct:this.props.srcPict,
+        typeScin:this.props.typeScin,
+        count:this.props.count,
+      };
+  }    
+  else{
+      workMod=2;
+  }
+     this.props.cbSelectedProduct(this.props.code, objCard, isEdit, workMod, isCrea);
+  
+  };
+
+  deleteProd = () =>{
+    this.props.cbDeleteProduct(this.props.code);
+  };
+
+
+  render() {
+
+      return (
+        <tr style={{backgroundColor:this.props.isSelected? 'rgb(113, 188, 253)':'transparent'}} onClick={this.selectedProd} >
+          <td className='TdTable'>
+            <p className='PName'>{this.props.nameProduct}</p>
+          </td>
+          <td className='TdTable'>{this.props.price}</td>
+          <td className='TdTable'>
+            <img className='Img' src={this.props.srcPict} title={this.props.nameProduct} />
+          </td>
+          <td className='TdTable'>{this.props.typeScin}</td>
+          <td className='TdTable'>{this.props.count}</td>
+          <td className='TdTable'>
+            <input className='ButtCon' type='button' value={this.props.control} onClick={this.deleteProd} disabled={this.props.isEdit}/>
+            <input className='ButtCon' name='change' type='button' value='Изменить' disabled={this.props.isMadeChange} />
+            
+          </td>
+        </tr>        
+      )
+  }
+
+}
+
+export default Product;

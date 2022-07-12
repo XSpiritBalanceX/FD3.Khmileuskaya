@@ -471,7 +471,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var labelText = 'Магазин косметики IShop';
 var productsArr = __webpack_require__(30);
 var headerArr = { name: 'Название продукта', price: 'Цена', url: 'Фото', type: 'Тип кожи', count: 'Остаток на складе', control: 'Управление' };
-var workModel = 1;
+var workModel = 0;
 
 _reactDom2.default.render(_react2.default.createElement(_Ishop2.default, {
   label: labelText,
@@ -30571,6 +30571,8 @@ var _Card2 = _interopRequireDefault(_Card);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
@@ -30595,10 +30597,17 @@ var Ishop = function (_React$Component) {
       list: _this.props.products, //список продуктов
       isSelected: null, //выбран товар или нет
       cardSelected: null, //карточка выбранного товара
-      isEdit: null, //изменяется ли товар
-      workModel: _this.props.startWorkModel //отображение карточек
-    }, _this.selectedProduct = function (code, objProd, isE, workMod) {
-      _this.setState({ isSelected: code, cardSelected: objProd, isEdit: isE, workModel: workMod });
+      isEdit: false, //изменяется ли товар
+      workModel: _this.props.startWorkModel, //отображение карточек
+      disabledButton: false, //можно ли кликать по кнопкам
+      isCreated: false, //создается ли новый продукт
+      isMadeChange: false //внеслись ли изменения
+    }, _this.selectedProduct = function (code, objProd, isE, workMod, isCrea) {
+      _this.setState({ isSelected: code,
+        cardSelected: objProd,
+        isEdit: isE,
+        workModel: workMod,
+        isCreated: isCrea });
     }, _this.deleteProduct = function (code) {
       var copyArr = _this.state.list.slice();
       var inDelElem;
@@ -30613,6 +30622,41 @@ var Ishop = function (_React$Component) {
         copyArr.splice(inDelElem, 1);
         _this.setState({ list: copyArr });
       }
+    }, _this.disabledBut = function (boolValue) {
+      _this.setState({ disabledButton: boolValue });
+    }, _this.saveEdit = function (editCard) {
+      var newListProd = _this.state.list.map(function (element) {
+        return element.code === editCard.code ? editCard : element;
+      });
+      _this.setState({ list: newListProd,
+        isSelected: editCard.code,
+        cardSelected: editCard,
+        isMadeChange: false });
+    }, _this.createNewProduct = function () {
+      var newCreatProd = { code: _this.state.list.length + 1,
+        namePdoduct: '',
+        price: '',
+        urlProduct: '',
+        typeScin: '',
+        count: ''
+      };
+      _this.setState({ isCreated: true,
+        workModel: 3,
+        cardSelected: newCreatProd });
+    }, _this.saveNewProduct = function (newProduct) {
+      var newList = [].concat(_toConsumableArray(_this.state.list), [newProduct]);
+      _this.setState({ list: newList,
+        isSelected: newProduct.code,
+        isEdit: false,
+        cardSelected: newProduct,
+        isCreated: false, workModel: _this.props.startWorkModel, isMadeChange: false });
+      console.log(newList);
+    }, _this.madeChange = function (value) {
+      _this.setState({ isMadeChange: value });
+    }, _this.canselSaveNewProd = function () {
+      _this.setState({ isSelected: null, cardSelected: null, isCreated: false });
+    }, _this.canselEdit = function () {
+      _this.setState({ isEdit: false });
     }, _temp), _possibleConstructorReturn(_this, _ret);
   }
 
@@ -30632,19 +30676,28 @@ var Ishop = function (_React$Component) {
           control: el.control,
           isSelected: el.code === _this2.state.isSelected,
           cbSelectedProduct: _this2.selectedProduct,
-          cbDeleteProduct: _this2.deleteProduct
+          cbDeleteProduct: _this2.deleteProduct,
+          disabled: _this2.state.disabledButton,
+          isMadeChange: _this2.state.isMadeChange
         });
       });
 
       //карточка продукта
-      var cardProduct = this.state.cardSelected ? _react2.default.createElement(_Card2.default, {
+      var cardProduct = this.state.cardSelected || this.state.isEdit ? _react2.default.createElement(_Card2.default, {
         id: this.state.cardSelected.code,
-        name: this.state.cardSelected.name,
+        name: this.state.cardSelected.namePdoduct,
         price: this.state.cardSelected.price,
-        url: this.state.cardSelected.url,
-        type: this.state.cardSelected.type,
+        url: this.state.cardSelected.urlProduct,
+        type: this.state.cardSelected.typeScin,
         count: this.state.cardSelected.count,
-        workModel: this.state.workModel }) : null;
+        workMod: this.state.workModel,
+        cbDisabled: this.disabledBut,
+        cbSaveEdit: this.saveEdit,
+        isCreated: this.state.isCreated,
+        cbSaveNewProduct: this.saveNewProduct,
+        cbCanselSaveNewProd: this.canselSaveNewProd,
+        cbCanselEdit: this.canselEdit,
+        cbMadeChange: this.madeChange }) : null;
 
       return _react2.default.createElement(
         'div',
@@ -30657,9 +30710,13 @@ var Ishop = function (_React$Component) {
         _react2.default.createElement(
           'div',
           { className: 'buttNewProd' },
-          _react2.default.createElement('input', { type: 'button', className: 'butNewP', value: '\u041D\u043E\u0432\u044B\u0439 \u043F\u0440\u043E\u0434\u0443\u043A\u0442' })
+          _react2.default.createElement('input', { type: 'button', className: 'butNewP', value: '\u041D\u043E\u0432\u044B\u0439 \u043F\u0440\u043E\u0434\u0443\u043A\u0442', disabled: this.state.disabledButton, onClick: this.createNewProduct })
         ),
-        _react2.default.createElement('div', { className: 'infoProduct' }),
+        _react2.default.createElement(
+          'div',
+          { className: 'infoProduct' },
+          cardProduct
+        ),
         _react2.default.createElement(
           'table',
           { className: 'TableProduct' },
@@ -30730,7 +30787,7 @@ Ishop.propTypes = {
     price: _propTypes2.default.string.isRequired,
     urlProduct: _propTypes2.default.string.isRequired,
     typeScin: _propTypes2.default.string,
-    count: _propTypes2.default.number.isRequired,
+    count: _propTypes2.default.string.isRequired,
     control: _propTypes2.default.string.isRequired
   })),
   startWorkModel: _propTypes2.default.number.isRequired
@@ -31801,23 +31858,27 @@ var Product = function (_React$Component) {
     }
 
     return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = Product.__proto__ || Object.getPrototypeOf(Product)).call.apply(_ref, [this].concat(args))), _this), _this.selectedProd = function (EO) {
-      var isEdit = false;
-      var workMod = null;
-      var objCard = {
-        name: _this.props.nameProduct,
-        code: _this.props.code,
-        price: _this.props.price,
-        url: _this.props.srcPict,
-        type: _this.props.typeScin,
-        count: _this.props.count
-      };
-      if (EO.target.value == 'Изменить') {
-        isEdit = true;
-        workMod = 2;
+      var isCrea = false;
+      var workMod = void 0;
+      var isEdit = void 0;
+      if (!_this.props.isMadeChange) {
+        isEdit = false;
+        if (EO.target.value === 'Изменить') {
+          isEdit = true;
+          workMod = 1;
+        }
+        var objCard = {
+          namePdoduct: _this.props.nameProduct,
+          code: _this.props.code,
+          price: _this.props.price,
+          urlProduct: _this.props.srcPict,
+          typeScin: _this.props.typeScin,
+          count: _this.props.count
+        };
       } else {
-        workMod = 3;
+        workMod = 2;
       }
-      _this.props.cbSelectedProduct(_this.props.code, objCard, isEdit, workMod);
+      _this.props.cbSelectedProduct(_this.props.code, objCard, isEdit, workMod, isCrea);
     }, _this.deleteProd = function () {
       _this.props.cbDeleteProduct(_this.props.code);
     }, _temp), _possibleConstructorReturn(_this, _ret);
@@ -31862,8 +31923,8 @@ var Product = function (_React$Component) {
         _react2.default.createElement(
           'td',
           { className: 'TdTable' },
-          _react2.default.createElement('input', { className: 'ButtCon', type: 'button', value: this.props.control, onClick: this.deleteProd }),
-          _react2.default.createElement('input', { className: 'ButtCon', name: 'change', type: 'button', value: '\u0418\u0437\u043C\u0435\u043D\u0438\u0442\u044C' })
+          _react2.default.createElement('input', { className: 'ButtCon', type: 'button', value: this.props.control, onClick: this.deleteProd, disabled: this.props.isEdit }),
+          _react2.default.createElement('input', { className: 'ButtCon', name: 'change', type: 'button', value: '\u0418\u0437\u043C\u0435\u043D\u0438\u0442\u044C', disabled: this.props.isMadeChange })
         )
       );
     }
@@ -31878,11 +31939,13 @@ Product.propTypes = {
   price: _propTypes2.default.string.isRequired,
   srcPict: _propTypes2.default.string.isRequired,
   typeScin: _propTypes2.default.string.isRequired,
-  count: _propTypes2.default.number.isRequired,
-  control: _propTypes2.default.string.isRequired,
+  count: _propTypes2.default.string.isRequired,
+  control: _propTypes2.default.string,
   isSelected: _propTypes2.default.bool,
   cbSelectedProduct: _propTypes2.default.func,
-  cbDeleteProduct: _propTypes2.default.func
+  cbDeleteProduct: _propTypes2.default.func,
+  disabled: _propTypes2.default.bool,
+  isMadeChange: _propTypes2.default.bool
 };
 exports.default = Product;
 
@@ -31900,7 +31963,7 @@ exports.default = Product;
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -31924,150 +31987,273 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 var Card = function (_React$Component) {
-    _inherits(Card, _React$Component);
+  _inherits(Card, _React$Component);
 
-    function Card() {
-        var _ref;
+  function Card() {
+    var _ref;
 
-        var _temp, _this, _ret;
+    var _temp, _this, _ret;
 
-        _classCallCheck(this, Card);
+    _classCallCheck(this, Card);
 
-        for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-            args[_key] = arguments[_key];
-        }
-
-        return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = Card.__proto__ || Object.getPrototypeOf(Card)).call.apply(_ref, [this].concat(args))), _this), _this.state = {
-            idProd: _this.props.id,
-            nameProd: _this.props.name,
-            priceProd: _this.props.price,
-            urlProd: _this.props.url,
-            typeSc: _this.props.type,
-            countProd: _this.props.count,
-            workModel: _this.props.workModel
-        }, _temp), _possibleConstructorReturn(_this, _ret);
+    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
     }
 
-    _createClass(Card, [{
-        key: 'componentDidUpdate',
-        value: function componentDidUpdate(oldProps, newProps) {
-            if (oldProps.id !== this.props.id) {
-                this.setState({ idProd: this.props.id,
-                    nameProd: this.props.name,
-                    priceProd: this.props.price,
-                    urlProd: this.props.url,
-                    typeSc: this.props.type,
-                    countProd: this.props.count,
-                    workModel: this.props.workModel });
-            }
-        }
-    }, {
-        key: 'render',
-        value: function render() {
-            if (this.state.workModel === 2) {
-                return _react2.default.createElement(
-                    _react2.default.Fragment,
-                    null,
-                    _react2.default.createElement(
-                        'h2',
-                        null,
-                        '\u0420\u0435\u0434\u0430\u043A\u0442\u0438\u0440\u043E\u0432\u0430\u043D\u0438\u0435 \u043F\u0440\u043E\u0434\u0443\u043A\u0442\u0430'
-                    ),
-                    _react2.default.createElement(
-                        'p',
-                        { className: 'labelInp' },
-                        'ID: ',
-                        this.props.id
-                    ),
-                    _react2.default.createElement(
-                        'label',
-                        { htmlFor: 'name', className: 'labelInp' },
-                        '\u041D\u0430\u0437\u0432\u0430\u043D\u0438\u0435 \u043F\u0440\u043E\u0434\u0443\u043A\u0442\u0430'
-                    ),
-                    _react2.default.createElement('input', { type: 'text', className: 'InputProd', name: 'name', value: this.state.nameProd }),
-                    _react2.default.createElement('br', null),
-                    _react2.default.createElement(
-                        'label',
-                        { htmlFor: 'price', className: 'labelInp' },
-                        '\u0426\u0435\u043D\u0430 \u043F\u0440\u043E\u0434\u0443\u043A\u0442\u0430'
-                    ),
-                    _react2.default.createElement('input', { type: 'text', className: 'InputProd', name: 'price', value: this.state.priceProd }),
-                    _react2.default.createElement('br', null),
-                    _react2.default.createElement(
-                        'label',
-                        { htmlFor: 'url', className: 'labelInp' },
-                        'URL \u043F\u0440\u043E\u0434\u0443\u043A\u0442\u0430'
-                    ),
-                    _react2.default.createElement('input', { type: 'text', className: 'InputProd', name: 'url', value: this.state.urlProd }),
-                    _react2.default.createElement('br', null),
-                    _react2.default.createElement(
-                        'label',
-                        { htmlFor: 'type', className: 'labelInp' },
-                        '\u0422\u0438\u043F \u043A\u043E\u0436\u0438'
-                    ),
-                    _react2.default.createElement('input', { type: 'text', className: 'InputProd', name: 'type', value: this.state.typeSc }),
-                    _react2.default.createElement('br', null),
-                    _react2.default.createElement(
-                        'label',
-                        { htmlFor: 'count', className: 'labelInp' },
-                        '\u041E\u0441\u0442\u0430\u0442\u043E\u043A \u043F\u0440\u043E\u0434\u0443\u043A\u0442\u0430'
-                    ),
-                    _react2.default.createElement('input', { type: 'text', className: 'InputProd', name: 'count', value: this.state.countProd }),
-                    _react2.default.createElement('br', null),
-                    _react2.default.createElement('input', { type: 'button', className: 'saveButt', value: '\u0421\u043E\u0445\u0440\u0430\u043D\u0438\u0442\u044C' }),
-                    _react2.default.createElement('input', { type: 'button', className: 'canselButt', value: '\u041E\u0442\u043C\u0435\u043D\u0430' })
-                );
-            } else if (this.state.workModel === 3) {
-                return _react2.default.createElement(
-                    _react2.default.Fragment,
-                    null,
-                    ' ',
-                    _react2.default.createElement(
-                        'h3',
-                        null,
-                        '\u041A\u0430\u0440\u0442\u043E\u0447\u043A\u0430 \u0442\u043E\u0432\u0430\u0440\u0430'
-                    ),
-                    _react2.default.createElement(
-                        'p',
-                        null,
-                        '\u041D\u0430\u0438\u043C\u0435\u043D\u043E\u0432\u0430\u043D\u0438\u0435 \u0442\u043E\u0432\u0430\u0440\u0430: ',
-                        this.props.name
-                    ),
-                    _react2.default.createElement(
-                        'p',
-                        null,
-                        '\u0426\u0435\u043D\u0430 \u0442\u043E\u0432\u0430\u0440\u0430: ',
-                        this.props.price
-                    ),
-                    _react2.default.createElement(
-                        'p',
-                        null,
-                        '\u0422\u0438\u043F \u043A\u043E\u0436\u0438: ',
-                        this.props.type
-                    ),
-                    _react2.default.createElement(
-                        'p',
-                        null,
-                        '\u041E\u0441\u0442\u0430\u043B\u043E\u0441\u044C ',
-                        this.props.count,
-                        ' \u0448\u0442.'
-                    )
-                );
-            }
-        }
-    }]);
+    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = Card.__proto__ || Object.getPrototypeOf(Card)).call.apply(_ref, [this].concat(args))), _this), _this.state = {
+      idProd: _this.props.id,
+      nameProd: _this.props.name,
+      priceProd: _this.props.price,
+      urlProd: _this.props.url,
+      typeSc: _this.props.type,
+      countProd: _this.props.count,
+      workModel: _this.props.workMod, //отображение карточек
+      validName: '',
+      validPrice: '',
+      validURL: '',
+      validType: '',
+      validCount: '',
+      disabledSave: false //можно ли сохранить изменения
+    }, _this.changeInput = function (EO) {
+      _this.validInputForm(EO.target.name, EO.target.value);
+      _this.props.cbDisabled(true);
+      _this.props.cbMadeChange(true);
+    }, _this.validInputForm = function (name, value) {
+      var error = void 0;
+      var regAlp = /^[a-z]*$/i;
+      switch (name) {
+        case 'name':
+          regAlp.test(value.toLowerCase()) || value === '' ? error = true : error = false;
+          _this.setState({ nameProd: value, validName: error });break;
+        case 'price':
+          isNaN(Number(value)) || value === '' ? error = true : error = false;
+          _this.setState({ priceProd: value, validPrice: error });break;
+        case 'url':
+          value === '' ? error = true : error = false;
+          _this.setState({ urlProd: value, validURL: error });break;
+        case 'type':
+          regAlp.test(value.toLowerCase()) || value === '' ? error = true : error = false;
+          _this.setState({ typeSc: value, validType: error });break;
+        case 'count':
+          isNaN(Number(value)) || value === '' ? error = true : error = false;
+          _this.setState({ countProd: value, validCount: error });break;
+      }
+      if (_this.state.validName || _this.state.validPrice || _this.state.validURL || _this.state.validType || _this.state.validCount) {
+        _this.setState({ disabledSave: true });
+      } else {
+        _this.setState({ disabledSave: false });
+      }
+    }, _this.saveEditCard = function () {
+      var editCard = {
+        code: _this.state.idProd,
+        namePdoduct: _this.state.nameProd,
+        price: _this.state.priceProd,
+        urlProduct: _this.state.urlProd,
+        typeScin: _this.state.typeSc,
+        count: _this.state.countProd
+      };
+      _this.props.cbMadeChange(false);
+      if (_this.props.isCreated) {
+        editCard.control = 'Удалить';
+        _this.props.cbSaveNewProduct(editCard);
+      }
+      _this.props.cbSaveEdit(editCard);
+      _this.props.cbDisabled(false);
+    }, _this.canselEdit = function () {
+      _this.setState({ nameProd: _this.props.name,
+        priceProd: _this.props.price,
+        urlProd: _this.props.url,
+        typeSc: _this.props.type,
+        countProd: _this.props.count,
+        validName: '',
+        validPrice: '',
+        validURL: '',
+        validType: '',
+        validCount: '',
+        disabledSave: false });
+      _this.props.cbDisabled(false);
+      _this.props.cbMadeChange(false);
+      _this.props.cbCanselEdit();
+      if (_this.props.isCreated) {
+        _this.props.cbCanselSaveNewProd();
+      }
+    }, _temp), _possibleConstructorReturn(_this, _ret);
+  }
 
-    return Card;
+  _createClass(Card, [{
+    key: 'componentDidUpdate',
+    value: function componentDidUpdate(oldProps, oldState) {
+      if (oldProps.id !== this.props.id || oldProps.workMod !== this.props.workMod) {
+        console.log('изменение в card');
+        this.setState({ idProd: this.props.id,
+          nameProd: this.props.name,
+          priceProd: this.props.price,
+          urlProd: this.props.url,
+          typeSc: this.props.type,
+          countProd: this.props.count,
+          workModel: this.props.workMod,
+          disabledSave: false });
+      }
+    }
+  }, {
+    key: 'render',
+    value: function render() {
+      if (this.state.workModel === 1 || this.state.workModel === 3) {
+        var phrase = this.props.isCreated && this.state.workModel === 3 ? 'Создание нового товара' : 'Редактирование продукта';
+        var idProdForm = this.props.isCreated && this.state.workModel === 3 ? null : _react2.default.createElement(
+          'p',
+          { className: 'labelInp' },
+          'ID: ',
+          this.props.id
+        );
+        var inpSaveForm = this.props.isCreated && this.state.workModel === 3 ? 'Добавить' : 'Сохранить';
+        return _react2.default.createElement(
+          _react2.default.Fragment,
+          null,
+          _react2.default.createElement(
+            'h2',
+            null,
+            phrase
+          ),
+          idProdForm,
+          _react2.default.createElement(
+            'div',
+            { className: 'flex' },
+            _react2.default.createElement(
+              'label',
+              { htmlFor: 'name', className: 'labelInp' },
+              '\u041D\u0430\u0437\u0432\u0430\u043D\u0438\u0435 \u043F\u0440\u043E\u0434\u0443\u043A\u0442\u0430'
+            ),
+            _react2.default.createElement('input', { type: 'text', className: 'InputProd', name: 'name', value: this.state.nameProd, onChange: this.changeInput }),
+            _react2.default.createElement(
+              'div',
+              { className: 'error' },
+              this.state.validName || this.state.nameProd === '' ? 'Заполните поле.Используйте кириллицу' : null
+            )
+          ),
+          _react2.default.createElement(
+            'div',
+            { className: 'flex' },
+            _react2.default.createElement(
+              'label',
+              { htmlFor: 'price', className: 'labelInp' },
+              '\u0426\u0435\u043D\u0430 \u043F\u0440\u043E\u0434\u0443\u043A\u0442\u0430'
+            ),
+            _react2.default.createElement('input', { type: 'text', className: 'InputProd', name: 'price', value: this.state.priceProd, onChange: this.changeInput }),
+            _react2.default.createElement(
+              'div',
+              { className: 'error' },
+              this.state.validPrice || this.state.priceProd === '' ? 'Заполните поле. Данные в виде чисел' : this.state.validPrice ? 'Используйте цифры' : null
+            )
+          ),
+          _react2.default.createElement(
+            'div',
+            { className: 'flex' },
+            _react2.default.createElement(
+              'label',
+              { htmlFor: 'url', className: 'labelInp' },
+              'URL \u043F\u0440\u043E\u0434\u0443\u043A\u0442\u0430'
+            ),
+            _react2.default.createElement('input', { type: 'text', className: 'InputProd', name: 'url', value: this.state.urlProd, onChange: this.changeInput }),
+            _react2.default.createElement(
+              'div',
+              { className: 'error' },
+              this.state.validURL || this.state.urlProd === '' ? 'Заполните корректно поле' : null
+            )
+          ),
+          _react2.default.createElement(
+            'div',
+            { className: 'flex' },
+            _react2.default.createElement(
+              'label',
+              { htmlFor: 'type', className: 'labelInp' },
+              '\u0422\u0438\u043F \u043A\u043E\u0436\u0438'
+            ),
+            _react2.default.createElement('input', { type: 'text', className: 'InputProd', name: 'type', value: this.state.typeSc, onChange: this.changeInput }),
+            _react2.default.createElement(
+              'div',
+              { className: 'error' },
+              this.state.validType || this.state.typeSc === '' ? 'Заполните поле.Используйте кириллицу' : null
+            )
+          ),
+          _react2.default.createElement(
+            'div',
+            { className: 'flex' },
+            _react2.default.createElement(
+              'label',
+              { htmlFor: 'count', className: 'labelInp' },
+              '\u041E\u0441\u0442\u0430\u0442\u043E\u043A \u043F\u0440\u043E\u0434\u0443\u043A\u0442\u0430'
+            ),
+            _react2.default.createElement('input', { type: 'text', className: 'InputProd', name: 'count', value: this.state.countProd, onChange: this.changeInput }),
+            _react2.default.createElement(
+              'div',
+              { className: 'error' },
+              this.state.validCount || this.state.countProd === '' ? 'Заполните поле. Данные в виде чисел' : null
+            )
+          ),
+          _react2.default.createElement('input', { type: 'button', className: 'saveButt', value: inpSaveForm, disabled: this.state.disabledSave, onClick: this.saveEditCard }),
+          _react2.default.createElement('input', { type: 'button', className: 'canselButt', value: '\u041E\u0442\u043C\u0435\u043D\u0430', onClick: this.canselEdit })
+        );
+      } else if (this.state.workModel === 2) {
+        return _react2.default.createElement(
+          _react2.default.Fragment,
+          null,
+          ' ',
+          _react2.default.createElement(
+            'h3',
+            null,
+            '\u041A\u0430\u0440\u0442\u043E\u0447\u043A\u0430 \u0442\u043E\u0432\u0430\u0440\u0430'
+          ),
+          _react2.default.createElement(
+            'p',
+            null,
+            '\u041D\u0430\u0438\u043C\u0435\u043D\u043E\u0432\u0430\u043D\u0438\u0435 \u0442\u043E\u0432\u0430\u0440\u0430: ',
+            this.props.name
+          ),
+          _react2.default.createElement(
+            'p',
+            null,
+            '\u0426\u0435\u043D\u0430 \u0442\u043E\u0432\u0430\u0440\u0430: ',
+            this.props.price
+          ),
+          _react2.default.createElement(
+            'p',
+            null,
+            '\u0422\u0438\u043F \u043A\u043E\u0436\u0438: ',
+            this.props.type
+          ),
+          _react2.default.createElement(
+            'p',
+            null,
+            '\u041E\u0441\u0442\u0430\u043B\u043E\u0441\u044C ',
+            this.props.count,
+            ' \u0448\u0442.'
+          )
+        );
+      } else if (this.state.workModel === 0) {
+        return null;
+      }
+    }
+  }]);
+
+  return Card;
 }(_react2.default.Component);
 
-Card.PropTypes = {
-    id: _propTypes2.default.string.isRequired,
-    name: _propTypes2.default.string.isRequired,
-    price: _propTypes2.default.string.isRequired,
-    url: _propTypes2.default.string.isRequired,
-    type: _propTypes2.default.string.isRequired,
-    count: _propTypes2.default.number.isRequired,
-    workModel: _propTypes2.default.number.isRequired
+Card.propTypes = {
+  id: _propTypes2.default.number.isRequired,
+  name: _propTypes2.default.string.isRequired,
+  price: _propTypes2.default.string.isRequired,
+  url: _propTypes2.default.string.isRequired,
+  type: _propTypes2.default.string.isRequired,
+  count: _propTypes2.default.string.isRequired,
+  workMod: _propTypes2.default.number.isRequired,
+  cbDisabled: _propTypes2.default.func.isRequired,
+  cbSaveEdit: _propTypes2.default.func.isRequired,
+  isCreated: _propTypes2.default.bool,
+  cbSaveNewProduct: _propTypes2.default.func.isRequired,
+  cbCanselSaveNewProd: _propTypes2.default.func.isRequired,
+  cbCanselEdit: _propTypes2.default.func.isRequired,
+  cbMadeChange: _propTypes2.default.func.isRequired
 };
 exports.default = Card;
 
@@ -32081,7 +32267,7 @@ exports.default = Card;
 /* 30 */
 /***/ (function(module, exports) {
 
-module.exports = [{"namePdoduct":"Пенка для умывания","code":1,"price":"15 BYN","urlProduct":"imagesShop/penka.png","typeScin":"Нормальная и сухая","count":10,"control":"Удалить"},{"namePdoduct":"Крем для лица","code":2,"price":"28 BYN","urlProduct":"imagesShop/cream.png","typeScin":"Сухая","count":8,"control":"Удалить"},{"namePdoduct":"Крем для области вокруг глаз","code":3,"price":"43 BYN","urlProduct":"imagesShop/creamY.png","typeScin":"Все типы кожи","count":3,"control":"Удалить"},{"namePdoduct":"Бальзам для губ","code":4,"price":"12 BYN","urlProduct":"imagesShop/balm.png","typeScin":"Все типы кожи","count":15,"control":"Удалить"},{"namePdoduct":"Тонер для лица","code":5,"price":"23 BYN","urlProduct":"imagesShop/toner.png","typeScin":"Все типы кожи","count":6,"control":"Удалить"},{"namePdoduct":"Тоник для лица","code":6,"price":"36 BYN","urlProduct":"imagesShop/tonic.png","typeScin":"Чувствительная","count":17,"control":"Удалить"},{"namePdoduct":"Маска для лица","code":7,"price":"45 BYN","urlProduct":"imagesShop/maskBut.png","typeScin":"Комбинированная","count":11,"control":"Удалить"},{"namePdoduct":"Маска тканевая для лица","code":8,"price":"6,6 BYN","urlProduct":"imagesShop/mask.png","typeScin":"Все типы кожи","count":23,"control":"Удалить"},{"namePdoduct":"Пилинг для лица","code":9,"price":"32 BYN","urlProduct":"imagesShop/piling.png","typeScin":"Нормальная, жирная и комбинированная","count":18,"control":"Удалить"},{"namePdoduct":"Крем для рук","code":10,"price":"8,6 BYN","urlProduct":"imagesShop/armCream.png","typeScin":"Все типы кожи","count":14,"control":"Удалить"}]
+module.exports = [{"namePdoduct":"Пенка для умывания","code":1,"price":"15 BYN","urlProduct":"imagesShop/penka.png","typeScin":"Нормальная и сухая","count":"10","control":"Удалить"},{"namePdoduct":"Крем для лица","code":2,"price":"28 BYN","urlProduct":"imagesShop/cream.png","typeScin":"Сухая","count":"8","control":"Удалить"},{"namePdoduct":"Крем для области вокруг глаз","code":3,"price":"43 BYN","urlProduct":"imagesShop/creamY.png","typeScin":"Все типы кожи","count":"3","control":"Удалить"},{"namePdoduct":"Бальзам для губ","code":4,"price":"12 BYN","urlProduct":"imagesShop/balm.png","typeScin":"Все типы кожи","count":"15","control":"Удалить"},{"namePdoduct":"Тонер для лица","code":5,"price":"23 BYN","urlProduct":"imagesShop/toner.png","typeScin":"Все типы кожи","count":"6","control":"Удалить"}]
 
 /***/ })
 /******/ ]);
