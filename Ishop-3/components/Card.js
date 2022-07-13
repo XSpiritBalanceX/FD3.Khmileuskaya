@@ -19,7 +19,6 @@ class Card extends React.Component{
      cbCanselSaveNewProduct:PropTypes.func.isRequired,
      cbSaveNewProduct:PropTypes.func.isRequired,
      cbSaveEdit:PropTypes.func.isRequired,
-     isMadeChange:PropTypes.bool,
   }
 
   state={
@@ -218,7 +217,7 @@ class Card extends React.Component{
           <input type='text' className='InputProd' name='count' value={this.state.count} onChange={this.changeInput} />            
         <div className='error'>{this.state.errText.count}</div>  
         </div>
-        <input type='button' className='saveButt' value='Добавить' disabled={this.props.isMadeChange&&canSave} onClick={this.saveCard} />
+        <input type='button' className='saveButt' value='Добавить' disabled={canSave} onClick={this.saveCard} />
         <input type='button' className='canselButt' value='Отмена'onClick={this.canselEdit}/>
       </React.Fragment>)
     }

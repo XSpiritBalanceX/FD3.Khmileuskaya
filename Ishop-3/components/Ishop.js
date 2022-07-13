@@ -162,8 +162,7 @@ class Ishop extends React.Component {
      cbCanselEdit={this.canselEdit}
      cbCanselSaveNewProduct={this.canselSaveNewProduct}
      cbSaveNewProduct={this.saveNewProduct}
-     cbSaveEdit={this.saveEdit}
-     isMadeChange={this.state.isMadeChange}/>:null;
+     cbSaveEdit={this.saveEdit}/>:null;
 
      
 
