@@ -19,6 +19,7 @@ class Card extends React.Component{
      cbCanselSaveNewProduct:PropTypes.func.isRequired,
      cbSaveNewProduct:PropTypes.func.isRequired,
      cbSaveEdit:PropTypes.func.isRequired,
+     isMadeChange:PropTypes.bool,
   }
 
   state={
@@ -28,19 +29,14 @@ class Card extends React.Component{
     urlProduct:this.props.urlProduct,
     typeScin:this.props.typeScin,
     count:this.props.count,
-    changeName:false,
-    changePrice:false,
-    changeUrl:false,
-    changeType:false,
-    changeCount:false,
     workModel:this.props.workModel,
 
     errText: {
-      nameProduct: '',
-      price: '',
-      urlProduct:'',
-      typeScin:'',
-      count: '',
+      nameProduct:this.props.isCreated?'Введите данные используя кириллицу': '',
+          price: this.props.isCreated?'Заполните поле. Данные в виде чисел': '',
+          urlProduct:this.props.isCreated?'Фото должно быть в формате jpg/png/jpeg': '',
+          typeScin:this.props.isCreated?'Введите данные используя кириллицу': '',
+          count: this.props.isCreated?'Заполните поле. Данные в виде чисел': '',
   }
   };
 
@@ -52,7 +48,13 @@ class Card extends React.Component{
         urlProduct:this.props.urlProduct,
         typeScin:this.props.typeScin,
         count:this.props.count,
-        workModel:this.props.workModel})
+        workModel:this.props.workModel,
+        errText: { nameProduct:this.props.isCreated?'Введите данные используя кириллицу': '',
+          price: this.props.isCreated?'Заполните поле. Данные в виде чисел': '',
+          urlProduct:this.props.isCreated?'Фото должно быть в формате jpg/png/jpeg': '',
+          typeScin:this.props.isCreated?'Введите данные используя кириллицу': '',
+          count: this.props.isCreated?'Заполните поле. Данные в виде чисел': '',
+      }})
     }
   };
 
@@ -63,29 +65,30 @@ class Card extends React.Component{
 
   checkField=(name, value)=>{
     var validValue=true;
+    var error;
     switch(name){
       case 'nameProduct':validValue=this.checkString(value);
-      this.props.isCreated?this.setState({changeName:true}):null;
+      error='Введите данные используя кириллицу';
         break;
       case 'typeScin': validValue=this.checkString(value);
-      this.props.isCreated?this.setState({changeType:true}):null;
+      error='Заполните поле.Используйте кириллицу';
        break;
       case 'price':validValue=this.checkNumber(value);
-      this.props.isCreated?this.setState({changePrice:true}):null;
+      error='Заполните поле. Данные в виде чисел';
        break;
       case 'count': validValue=this.checkNumber(value);
-        this.props.isCreated?this.setState({changeCount:true}):null;
+      error='Заполните поле. Данные в виде чисел';
          break;
       case 'urlProduct': validValue=this.checkUrl(value);
-      this.props.isCreated?this.setState({changeUrl:true}):null;
+      error='Фото должно быть в формате jpg/png/jpeg';
        break;
     }
-    var message=value&&validValue?'':'Поле заполнено неверно';
-    this.setState({[name]:value, errText: {...this.state.errText, [name]: message}});
+    var message=value&&validValue?'':error;
+    this.setState({[name]:value, errText: {...this.state.errText, [name]: message}}); 
   };
 
   checkString=(value)=>{
-    let regAlp=/^[а-яё]*$/i;
+    let regAlp=/^[а-яё\s/]*$/i;
     return regAlp.test(value.toLowerCase());
   };
 
@@ -98,9 +101,6 @@ class Card extends React.Component{
     return reg.test(value);
   };
 
-  focusInput=(EO)=>{
-   EO.target.value='';
-  }
 
   saveCard=()=>{
     var newProduct={
@@ -149,28 +149,28 @@ class Card extends React.Component{
         <p className='labelInp'>ID: {this.props.code}</p>
         <div className='flex'>
                <label htmlFor='name' className='labelInp'>Название продукта</label> 
-               <input type='text' className='InputProd' name='nameProduct' value={this.state.nameProduct} onChange={this.changeInput} onFocus={this.focusInput} />                              
+               <input type='text' className='InputProd' name='nameProduct' value={this.state.nameProduct} onChange={this.changeInput}  />                              
         <div className='error'>{this.state.errText.nameProduct}
         </div>  
         </div>
         <div className='flex'>
           <label htmlFor='price' className='labelInp'>Цена продукта</label>
-          <input type='text' className='InputProd' name='price' value={this.state.price} onChange={this.changeInput} onFocus={this.focusInput}/>            
+          <input type='text' className='InputProd' name='price' value={this.state.price} onChange={this.changeInput} />            
         <div className='error'>{this.state.errText.price}</div>  
         </div>
         <div className='flex'>
           <label htmlFor='url' className='labelInp'>URL продукта</label>
-          <input type='text' className='InputProd' name='urlProduct' value={this.state.urlProduct} onChange={this.changeInput} onFocus={this.focusInput}/>            
+          <input type='text' className='InputProd' name='urlProduct' value={this.state.urlProduct} onChange={this.changeInput} />            
         <div className='error'>{this.state.errText.urlProduct}</div>  
         </div>
         <div className='flex'>
           <label htmlFor='type' className='labelInp'>Тип кожи</label>
-          <input type='text' className='InputProd' name='typeScin' value={this.state.typeScin} onChange={this.changeInput} onFocus={this.focusInput}/>            
+          <input type='text' className='InputProd' name='typeScin' value={this.state.typeScin} onChange={this.changeInput} />            
         <div className='error'>{this.state.errText.typeScin}</div>  
         </div>
         <div className='flex'>
           <label htmlFor='count' className='labelInp'>Остаток продукта</label>
-          <input type='text' className='InputProd' name='count' value={this.state.count} onChange={this.changeInput} onFocus={this.focusInput}/>            
+          <input type='text' className='InputProd' name='count' value={this.state.count} onChange={this.changeInput} />            
         <div className='error'>{this.state.errText.count}</div>  
         </div>
         <input type='button' className='saveButt' value='Сохранить' disabled={canSave} onClick={this.saveCard}/>
@@ -191,30 +191,30 @@ class Card extends React.Component{
         <div className='flex'>
                <label htmlFor='name' className='labelInp'>Название продукта</label> 
                <input type='text' className='InputProd' name='nameProduct' value={this.state.nameProduct} onChange={this.changeInput} />                              
-        <div className='error'>{!this.state.changeName?'Введите данные используя кириллицу':this.state.errText.nameProduct}
+        <div className='error'>{this.state.errText.nameProduct}
         </div>  
         </div>
         <div className='flex'>
           <label htmlFor='price' className='labelInp'>Цена продукта</label>
           <input type='text' className='InputProd' name='price' value={this.state.price} onChange={this.changeInput} />            
-        <div className='error'>{!this.state.changePrice?'Заполните поле. Данные в виде чисел':this.state.errText.price}</div>  
+        <div className='error'>{this.state.errText.price}</div>  
         </div>
         <div className='flex'>
           <label htmlFor='url' className='labelInp'>URL продукта</label>
           <input type='text' className='InputProd' name='urlProduct' value={this.state.urlProduct} onChange={this.changeInput} />            
-        <div className='error'>{!this.state.changeUrl?'Заполните корректно поле':this.state.errText.urlProduct}</div>  
+        <div className='error'>{this.state.errText.urlProduct}</div>  
         </div>
         <div className='flex'>
           <label htmlFor='type' className='labelInp'>Тип кожи</label>
           <input type='text' className='InputProd' name='typeScin' value={this.state.typeScin} onChange={this.changeInput} />            
-        <div className='error'>{!this.state.changeType?'Заполните поле.Используйте кириллицу':this.state.errText.typeScin}</div>  
+        <div className='error'>{this.state.errText.typeScin}</div>  
         </div>
         <div className='flex'>
           <label htmlFor='count' className='labelInp'>Остаток продукта</label>
           <input type='text' className='InputProd' name='count' value={this.state.count} onChange={this.changeInput} />            
-        <div className='error'>{!this.state.changeCount?'Заполните поле. Данные в виде чисел':this.state.errText.count}</div>  
+        <div className='error'>{this.state.errText.count}</div>  
         </div>
-        <input type='button' className='saveButt' value='Добавить' disabled={canSave} onClick={this.saveCard} />
+        <input type='button' className='saveButt' value='Добавить' disabled={this.props.isMadeChange&&canSave} onClick={this.saveCard} />
         <input type='button' className='canselButt' value='Отмена'onClick={this.canselEdit}/>
       </React.Fragment>)
     }

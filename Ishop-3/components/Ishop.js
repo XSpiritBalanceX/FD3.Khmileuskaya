@@ -34,7 +34,7 @@ class Ishop extends React.Component {
   };
 
   state = {
-    list: this.props.products.slice(),//список продуктов
+    list: this.props.products,//список продуктов
     isSelected: null,//выбран товар или нет
     cardSelected:null,//карточка выбранного товара
     isEdit:false,//изменяется ли товар
@@ -44,7 +44,11 @@ class Ishop extends React.Component {
   };
 
   selectedProduct=(code, edit, work, product)=>{
-    this.setState({isSelected:code, isEdit:edit, workModel:work, cardSelected:{...product}})
+    this.setState({isSelected:code, 
+      isEdit:edit, 
+      workModel:work, 
+      cardSelected:{...product}, 
+      isCreated:false})
   };
 
   deleteProduct = (code) =>{
@@ -153,7 +157,8 @@ class Ishop extends React.Component {
      cbCanselEdit={this.canselEdit}
      cbCanselSaveNewProduct={this.canselSaveNewProduct}
      cbSaveNewProduct={this.saveNewProduct}
-     cbSaveEdit={this.saveEdit}/>:null;
+     cbSaveEdit={this.saveEdit}
+     isMadeChange={this.state.isMadeChange}/>:null;
 
      
 
