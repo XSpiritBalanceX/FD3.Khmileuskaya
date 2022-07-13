@@ -28,8 +28,7 @@ class Card extends React.Component{
     price:this.props.price,
     urlProduct:this.props.urlProduct,
     typeScin:this.props.typeScin,
-    count:this.props.count,/* 
-    workModel:this.props.workModel, */
+    count:this.props.count,
 
     errText: {
       nameProduct:this.props.isCreated?'Введите данные используя кириллицу': '',
@@ -47,8 +46,7 @@ class Card extends React.Component{
         price:this.props.price,
         urlProduct:this.props.urlProduct,
         typeScin:this.props.typeScin,
-        count:this.props.count,/* 
-        workModel:this.props.workModel, */
+        count:this.props.count,
         errText: { nameProduct:this.props.isCreated?'Введите данные используя кириллицу': '',
           price: this.props.isCreated?'Заполните поле. Данные в виде чисел': '',
           urlProduct:this.props.isCreated?'Фото должно быть в формате jpg/png/jpeg': '',
