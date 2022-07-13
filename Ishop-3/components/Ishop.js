@@ -63,9 +63,14 @@ class Ishop extends React.Component {
     });
     if(questAbDel){
       copyArr.splice(inDelElem,1);
-      this.setState({list:copyArr,cardSelected:null, isEdit:false});
+      this.setState({list:copyArr,cardSelected:null, isEdit:false, isSelected:null});
     }
   };
+  componentDidUpdate(oldProps, oldState){
+     if(oldState.list.length!==this.state.list.length){
+      this.setState({cardSelected:null, workModel:0, })
+     }
+  }
 
   createNewProduct=()=>{
     var newCreatProd={code:this.state.list.length+3,
@@ -87,7 +92,7 @@ class Ishop extends React.Component {
 
   canselEdit=()=>{
     this.setState({isEdit:false, 
-      workModel:0});
+      workModel:0, isSelected:null});
   };
 
   canselSaveNewProduct=()=>{
