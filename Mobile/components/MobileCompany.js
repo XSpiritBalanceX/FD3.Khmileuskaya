@@ -26,23 +26,28 @@ class MobileCompany extends React.PureComponent {
   state = {
     clientsList: this.props.clients,
     showClient:'all',
-    isSelected:null,
+    selectedCard:null,
     workModel:1,
+    listEdit:null,
+    filterList:this.props.clients
   };
 
   componentDidMount(){
    clientEvents.addListener('editClient', this.editClient);
    clientEvents.addListener('deleteClient', this.deleteClient);
+   cardEvents.addListener('editCard', this.editCard);
+   cardEvents.addListener('canselEditCard', this.canselEditCard);
   };
 
   componentWillUnmount(){
     clientEvents.removeListener('editClient', this.editClient);
     clientEvents.removeListener('deleteClient', this.deleteClient);
+    cardEvents.removeListener('editCard', this.editCard);
+    cardEvents.removeListener('canselEditCard', this.canselEditCard);
   };
 
   editClient=(id)=>{
-    this.setState({workModel:2})
-
+    this.setState({workModel:2, selectedCard:id});   
   };
 
   deleteClient=(id)=>{
@@ -54,42 +59,62 @@ class MobileCompany extends React.PureComponent {
       }
     });
     copyArr.splice(indexDel,1);
-    this.setState({clientsList:copyArr, workModel:1});
-  };
-  /* 
-  setBalance = (clientId,newBalance) => {
-    let changed=false;
-    let newClients=[...this.state.clients]; // копия самого массива клиентов
-    newClients.forEach( (c,i) => {
-      if ( c.id==clientId && c.balance!=newBalance ) {
-        let newClient={...c}; // копия хэша изменившегося клиента
-        newClient.balance=newBalance;
-        newClients[i]=newClient;
-        changed=true;
-      }
-    } );
-    if ( changed )
-      this.setState({clients:newClients});
-  };
- 
-  
-  setBalance1 = () => {
-    this.setBalance(105,230);
+    this.setState({clientsList:copyArr, workModel:1, filterList:copyArr});
   };
 
-  setBalance2 = () => {
-    this.setBalance(105,250);
-  }; */
-  /* <div className='MobileCompany'>
-        <input type="button" value="=МТС" onClick={this.setName1} />
-        <input type="button" value="=Velcom" onClick={this.setName2} />
-        <div className='MobileCompanyName'>Компания &laquo;{this.state.name}&raquo;</div>
-        <div className='MobileCompanyClients'>
-          {clientsCode}
-        </div>
-        <input type="button" value="Сидоров=230" onClick={this.setBalance1} />
-        <input type="button" value="Сидоров=250" onClick={this.setBalance2} />
-      </div> */
+  editCard=(newClient)=>{
+    let editProductsList;    
+    if(this.state.workModel===2){
+      editProductsList= this.state.clientsList.map(product => {
+      return product.id === newClient.id ? newClient : product;
+    });
+    }else if(this.state.workModel===3){
+      editProductsList=[...this.state.clientsList, newClient];
+    }
+    let forFilter=editProductsList;
+    this.setState({clientsList:editProductsList, 
+      workModel:1, 
+      filterList:forFilter, 
+      selectedCard:null});
+  };
+
+  canselEditCard=()=>{
+    this.setState({selectedCard:null, workModel:1})
+  };
+  
+  //переменная для передачи данных в компонент Card
+  editList=null;
+
+  createNewClient=()=>{  
+    let newID=Math.floor(Math.random()*300);
+    this.state.clientsList.forEach(el=>{
+      if(newID===el.id){
+        newID=el.id*100;
+      }
+    });
+   this.editList={id:newID,
+    surName:'',
+    firstName:'',
+    lastName:'',
+    balance:null};
+    this.setState({workModel:3,selectedCard:this.editList.id });
+  };
+
+  setListClients=(EO)=>{
+   this.setList(EO.target.name);
+  };
+
+  setList=(value)=>{
+    if(value==this.state.showClient){
+      return;
+    }
+    let clientsFilter=value==='all'?this.state.filterList:this.clienNewList(value);
+    this.setState({showClient:value, selectedCard:null, clientsList:clientsFilter})
+  };
+
+  clienNewList=(value)=>{
+    return value==='activ'?[...this.state.filterList].filter(it=>it.balance>0):[...this.state.filterList].filter(it=>it.balance<=0);
+  }
   
   render() {
 
@@ -98,20 +123,26 @@ class MobileCompany extends React.PureComponent {
     const clientsCode=this.state.clientsList.map( client =>
       <MobileClient 
       key={client.id} 
-      info={client} 
-      isSelected={client.code===this.state.isSelected}/>
+      info={client} />
     );
 
+    //если редакирование карточки-передаем уже существующие данные
+    this.state.clientsList.forEach(el=>{
+      if(el.id===this.state.selectedCard){
+       this.editList=el;
+      }
+    }); 
+    
     const cardProduct=(this.state.workModel===2 || this.state.workModel===3)?
-    <Card key={this.state.clientsList.id}
-     info={this.state.clientsList}
+    <Card key={this.editList.id}
+     info={this.editList}
      workModel={this.state.workModel}/>:null;
 
     return (
       <div>
-       <input type='button' defaultValue='Все' name='all'/>
-       <input type='button' defaultValue='Активные' name='activ'/>
-       <input type='button' defaultValue='Заблокированные' name='forbid'/>
+       <input type='button' defaultValue='Все' name='all' onClick={this.setListClients}/>
+       <input type='button' defaultValue='Активные' name='activ' onClick={this.setListClients}/>
+       <input type='button' defaultValue='Заблокированные' name='blocked' onClick={this.setListClients}/>
        <table className='TableMobilCompany'>
         <thead>
           <tr>
@@ -126,14 +157,11 @@ class MobileCompany extends React.PureComponent {
         </thead>
         <tbody>{clientsCode}</tbody>
        </table>
-       <input type='button' defaultValue='Добавить клиента' name='newCl'/>
-       <div>{cardProduct}</div>
+       <input type='button' defaultValue='Добавить клиента' name='newCl' onClick={this.createNewClient}/>
+       <div >{cardProduct}</div>
       </div>
     );
-
   }
-
-
 }
 
 export default MobileCompany;

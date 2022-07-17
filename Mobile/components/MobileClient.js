@@ -15,7 +15,6 @@ class MobileClient extends React.PureComponent {
       lastName: PropTypes.string.isRequired,
       balance: PropTypes.number.isRequired,
     }),
-    isSelected:PropTypes.bool,
   };
 
   state = {
@@ -37,7 +36,6 @@ class MobileClient extends React.PureComponent {
   }; */
 
   render() {
-
     console.log("MobileClient id="+this.state.info.id+" render");
 
     let statusCl=this.props.info.balance>0?'activ':'blocked';
