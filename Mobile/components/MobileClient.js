@@ -29,12 +29,6 @@ class MobileClient extends React.PureComponent {
     clientEvents.emit('deleteClient', this.props.info.id);
   };
 
-  /* componentDidUpdate = (oldProps, oldState) => {
-    console.log("MobileClient id="+this.props.info.id+" componentDidUpdate");
-    if ( this.props.info.balance!==this.state.info.balance )
-      this.setState({info:this.props.info});
-  }; */
-
   render() {
     console.log("MobileClient id="+this.state.info.id+" render");
 
