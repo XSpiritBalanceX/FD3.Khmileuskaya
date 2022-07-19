@@ -1,0 +1,6 @@
+.divLict{border:solid 2px black;
+    width:200px;
+    height:100px;
+    margin-top:10px;
+    overflow-y:auto;
+    line-height:2px}
