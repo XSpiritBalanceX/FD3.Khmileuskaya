@@ -51,14 +51,7 @@ class MobileCompany extends React.PureComponent {
   };
 
   deleteClient=(id)=>{
-    let copyArr=this.state.clientsList.slice();
-    let indexDel;
-    copyArr.forEach((el, index)=>{
-      if(el.id===id){
-        indexDel=index;
-      }
-    });
-    copyArr.splice(indexDel,1);
+    let copyArr=this.state.clientsList.filter(client=>client.id!==id);
     this.setState({clientsList:copyArr, workModel:1, filterList:copyArr});
   };
 
@@ -86,13 +79,13 @@ class MobileCompany extends React.PureComponent {
   editList=null;
 
   createNewClient=()=>{  
-    let newID=Math.floor(Math.random()*300);
+    let newID=0;
     this.state.clientsList.forEach(el=>{
-      if(newID===el.id){
-        newID=el.id*100;
+      if(el.id > newID){
+        newID=el.id;
       }
     });
-   this.editList={id:newID,
+   this.editList={id:newID+1,
     surName:'',
     firstName:'',
     lastName:'',
